@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Base — reset, document defaults, typography primitives, accessibility.
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Anchor targets clear the fixed header instead of hiding beneath it. */
+  scroll-padding-top: calc(var(--header-h) + 1.5rem);
+  -webkit-text-size-adjust: 100%;
+  background: var(--ground);
+}
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: var(--size-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-synthesis-weight: none;
+  overflow-x: hidden; /* glow layers extend past the viewport by design */
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: var(--track-display);
+  line-height: 1.06;
+  text-wrap: balance;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--white);
+}
+
+/* --- Typography primitives ------------------------------------------------ */
+
+/* Mono label — the workhorse: section indices, field names, status values,
+   captions. Always uppercase and tracked. */
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--size-label);
+  font-weight: 400;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0;
+}
+
+.label--accent {
+  color: var(--accent-text);
+}
+
+.lede {
+  font-size: var(--size-lede);
+  line-height: 1.55;
+  color: var(--text-body);
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.prose {
+  color: var(--text-muted);
+  max-width: var(--measure);
+}
+
+.prose + .prose {
+  margin-top: 1.25rem;
+}
+
+/* Inline link with a nudging arrow on hover. */
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: var(--size-small);
+  color: var(--text);
+  border-bottom: 1px solid var(--border-lift);
+  padding-bottom: 0.3rem;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.link:hover {
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.link .arrow,
+.button .arrow {
+  transition: transform 0.2s var(--ease);
+}
+
+.link:hover .arrow,
+.button:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Solid button — used once per page at most. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: var(--radius);
+  background: var(--accent-fill);
+  color: var(--white);
+  font-size: var(--size-small);
+  font-weight: 500;
+  transition: background 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.button:hover {
+  background: var(--accent-fill-hover);
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(79, 109, 255, 0.35);
+}
+
+/* --- Accessibility -------------------------------------------------------- */
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: var(--accent);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  transform: translateY(-250%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

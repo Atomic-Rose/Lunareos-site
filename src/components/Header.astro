@@ -1,0 +1,46 @@
+---
+import { NAV, SITE } from '../site'
+
+// Normalise so '/about' and '/about/' both mark the same nav item current.
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    {/*
+      Two lockups, swapped by CSS at the width where the horizontal logo would
+      fall below the brand kit's 140px artwork minimum. Below that the kit's
+      guidance is symbol-only (24px minimum), not a shrunken lockup.
+    */}
+    <a class="site-header__brand" href="/" aria-label="Lunareos — home">
+      <img
+        class="site-header__lockup"
+        src="/lunareos-logo-horizontal-reversed.svg"
+        alt="Lunareos"
+        width="1600"
+        height="512"
+      />
+      <img
+        class="site-header__symbol"
+        src="/lunareos-symbol-silver.svg"
+        alt="Lunareos"
+        width="512"
+        height="512"
+      />
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      {
+        NAV.map((item) => (
+          <a
+            href={item.href}
+            aria-current={item.href.replace(/\/+$/, '') === path ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a class="button" href={`mailto:${SITE.email}`}>Say hello</a>
+    </nav>
+  </div>
+</header>

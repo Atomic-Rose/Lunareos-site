@@ -1,0 +1,54 @@
+---
+import { SITE, FOOTER_LINKS } from '../site'
+
+const year = new Date().getFullYear()
+---
+
+<footer class="site-footer">
+  <div class="shell">
+    <div class="site-footer__top">
+      <div>
+        <a class="site-footer__brand" href="/" aria-label="Lunareos — home">
+          <img
+            src="/lunareos-logo-horizontal-reversed.svg"
+            alt="Lunareos"
+            width="1600"
+            height="512"
+          />
+        </a>
+        <p class="site-footer__tagline">
+          A small studio making software with a long horizon.
+        </p>
+      </div>
+
+      <div class="site-footer__cols">
+        <div class="site-footer__col">
+          <p class="label">Pages</p>
+          <ul>
+            {FOOTER_LINKS.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+          </ul>
+        </div>
+
+        <div class="site-footer__col">
+          <p class="label">Say hello</p>
+          <ul>
+            <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          </ul>
+        </div>
+
+        <div class="site-footer__col">
+          <p class="label">Colophon</p>
+          <p class="site-footer__colophon">
+            Set in Inter Tight and JetBrains Mono. Built with Astro and served
+            as static files. No analytics, no cookies, no third-party scripts.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p class="label">{SITE.legalName}</p>
+      <p class="label">© {year} {SITE.legalName}</p>
+    </div>
+  </div>
+</footer>

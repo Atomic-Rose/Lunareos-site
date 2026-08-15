@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro'
+import { SITE } from '../site'
+
+// Bump this whenever the policy text below changes.
+const LAST_UPDATED = 'August 15, 2026'
+---
+
+<Base
+  title="Privacy"
+  description="How the Lunareos website handles information: it doesn't collect any."
+>
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="glow page-hero__glow" aria-hidden="true"></div>
+    <div class="shell page-hero__inner">
+      <p class="label label--accent">Legal</p>
+      <h1 class="page-hero__title" id="page-title">Privacy</h1>
+      <p class="lede page-hero__lede">
+        How this website handles information — which is to say, how little of it
+        there is to handle.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--hairline" aria-labelledby="policy-title">
+    <div class="shell editorial">
+      <div>
+        <p class="label">Policy</p>
+        <p class="label" style="margin-top:.6rem">Updated {LAST_UPDATED}</p>
+      </div>
+
+      <div>
+        <h2 class="visually-hidden" id="policy-title">Privacy policy</h2>
+
+        <div class="notice">
+          <p class="label">Draft — review before launch</p>
+          <p>
+            This is a general placeholder for a marketing website that collects
+            nothing. It should be reviewed by counsel and replaced with final
+            language before any Lunareos product ships.
+          </p>
+        </div>
+
+        <div class="legal">
+          <h2>What this site collects</h2>
+          <p>
+            Nothing. This website has no accounts, no forms, no advertising, and
+            no third-party scripts. It sets no cookies and runs no analytics. It
+            is a set of static files.
+          </p>
+
+          <h2>What our host sees</h2>
+          <p>
+            The site is served by GitHub Pages. Like any web host, GitHub
+            receives the requests needed to deliver a page — including your IP
+            address and browser user-agent — and may retain them in standard
+            server logs under its own policies. Lunareos does not have access to
+            those logs and does not collect, store, or process them.
+          </p>
+
+          <h2>Fonts</h2>
+          <p>
+            Typefaces are loaded from Google Fonts, which means your browser
+            makes a request to Google's servers when a page loads. That request
+            is subject to Google's privacy policy. We use it for typography
+            only, and no identifying information is sent by us.
+          </p>
+
+          <h2>If you email us</h2>
+          <p>
+            If you write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a>,
+            we use what you send solely to reply. We do not add you to a mailing
+            list, and we do not share your message with anyone else.
+          </p>
+
+          <h2>Products</h2>
+          <p>
+            Lunareos products will publish their own privacy policies describing
+            how they handle information, alongside the product, before it ships.
+            Nothing on this page should be read as covering them.
+          </p>
+
+          <h2>Questions</h2>
+          <p>
+            Write to <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and a
+            person will answer.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

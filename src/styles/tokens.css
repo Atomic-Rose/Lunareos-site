@@ -1,0 +1,107 @@
+/* ==========================================================================
+   Design tokens — the single source of truth for the Lunareos site.
+   Nothing below this file should hardcode a colour, size, or timing value.
+
+   The site is midnight-dominant, matching the identity: the brand board, the
+   app icons, and the favicon are all dark grounds, and the silver crescent
+   only resolves against one.
+   ========================================================================== */
+
+:root {
+  /* --- Brand palette -----------------------------------------------------
+     Verbatim from the Lunareos Brand Kit v2
+     (06-Brand-Guidelines/lunareos-brand-tokens.json). Do not edit these to
+     taste — if the brand changes, change it here and let the semantic
+     tokens below inherit. */
+  --midnight: #0a0d16;
+  --deep-indigo: #111827;
+  --steel-blue: #1e293b;
+  --slate: #334155;
+  --moonstone: #cbd5e1;
+  --white: #ffffff;
+  --accent: #4f6dff;
+
+  /* --- Surfaces ---------------------------------------------------------- */
+  --ground: var(--midnight); /*     the page                                */
+  --surface: var(--deep-indigo); /* cards, panels                           */
+  --surface-lift: var(--steel-blue); /* hover / raised state                */
+
+  --border: rgba(203, 213, 225, 0.11); /* hairline on ground                */
+  --border-lift: rgba(203, 213, 225, 0.2); /* hairline on a surface         */
+
+  /* --- Text --------------------------------------------------------------
+     Contrast ratios are against --ground; all clear WCAG AA (4.5:1), and
+     each also clears it on --surface. */
+  --text: #f1f4f8; /*        18.6:1 — headlines                             */
+  --text-body: #cbd5e1; /*   13.1:1 — moonstone, body copy                  */
+  --text-muted: #a8b4c6; /*   9.3:1 — secondary copy                        */
+  --text-faint: #7e8899; /*   5.4:1 — mono labels, metadata                 */
+
+  /* Brand accent is 4.6:1 on midnight but only 4.2:1 on --surface, so it
+     falls short of AA for text sitting on a card. --accent-text is the
+     lightened variant used wherever the accent carries actual words;
+     --accent itself stays for glows, borders, rules, and markers. */
+  --accent-text: #7e93ff; /*  6.9:1 on ground, 6.3:1 on surface             */
+  --accent-dim: rgba(79, 109, 255, 0.16);
+
+  /* White on the brand accent is only 4.2:1 — a solid accent button set at
+     body size would fail AA. These are the accent taken a step deeper so
+     white text clears it; hover goes deeper still and gets its brightness
+     from the glow rather than from a lighter fill. */
+  --accent-fill: #4763f5; /*  4.8:1 with white                              */
+  --accent-fill-hover: #3d59f0; /* 5.4:1 with white                         */
+
+  /* The glow. Every SVG in the brand kit declares this gradient and none of
+     them use it; here it becomes the site's one atmospheric device. It is
+     always a background layer — never composited onto the logo artwork,
+     which the kit's usage rules forbid. */
+  --glow: radial-gradient(circle, rgba(79, 109, 255, 0.36) 0%, transparent 70%);
+  --glow-soft: radial-gradient(circle, rgba(79, 109, 255, 0.14) 0%, transparent 68%);
+
+  --focus: var(--accent-text);
+
+  /* --- Type --------------------------------------------------------------
+     Two families only. The grotesque carries everything visible; the mono
+     carries structure — indices, labels, metadata, status.
+
+     Note: the wordmark in the logo files is drawn as vector strokes, not set
+     type, so it has no font dependency and must never be re-set in these. */
+  --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --size-display: clamp(2.75rem, 7vw, 6rem);
+  --size-h1: clamp(2.25rem, 5vw, 4rem);
+  --size-h2: clamp(1.875rem, 3.6vw, 3rem);
+  --size-h3: clamp(1.125rem, 1.5vw, 1.375rem);
+  --size-lede: clamp(1.0625rem, 1.45vw, 1.3125rem);
+  --size-body: 1rem;
+  --size-small: 0.875rem;
+  --size-label: 0.6875rem; /* mono labels — always uppercase + tracked      */
+
+  --track-display: -0.03em;
+  --track-label: 0.12em;
+
+  /* --- Space -------------------------------------------------------------- */
+  --gutter: clamp(1.25rem, 4.5vw, 4.5rem);
+  --band: clamp(5rem, 10vw, 9rem);
+  --band-tight: clamp(3rem, 5.5vw, 5rem);
+
+  --maxw: 1400px;
+  --measure: 60ch;
+
+  --radius: 4px; /* restrained — the brand is drawn with hard geometry      */
+  --radius-lg: 8px;
+
+  --header-h: 4.5rem;
+
+  /* --- Logo sizing -------------------------------------------------------
+     The lockup carries ~18% empty canvas on the right (artwork spans 73% of
+     the 1600-unit viewBox), so the CSS box must exceed the artwork width you
+     want. The kit's minimums are 140px of artwork for the horizontal lockup
+     and 24px for the symbol; below the lockup's floor the header falls back
+     to the symbol rather than shrinking past it. */
+  --logo-lockup-w: clamp(196px, 15vw, 224px); /* ≥143px of artwork          */
+  --logo-symbol-w: 34px;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}

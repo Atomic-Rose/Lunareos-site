@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 512">
+
+<defs>
+  <linearGradient id="silver" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#FFFFFF"/>
+    <stop offset="42%" stop-color="#F8FAFC"/>
+    <stop offset="72%" stop-color="#D9DEE7"/>
+    <stop offset="100%" stop-color="#A8B0C2"/>
+  </linearGradient>
+  <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+    <stop offset="0%" stop-color="#4F6DFF" stop-opacity="0.36"/>
+    <stop offset="100%" stop-color="#4F6DFF" stop-opacity="0"/>
+  </radialGradient>
+  <mask id="crescentMask">
+    <rect x="0" y="0" width="512" height="512" fill="black"/>
+    <circle cx="250" cy="255" r="160" fill="white"/>
+    <circle cx="286" cy="231" r="146" fill="black"/>
+  </mask>
+</defs>
+
+<rect width="1600" height="512" fill="#0A0D16"/>
+<g transform="translate(46,0) scale(1)">
+  <rect x="64" y="64" width="384" height="384" fill="url(#silver)" mask="url(#crescentMask)"/>
+  <path d="M 369.00,90.00 L 371.93,135.93 L 381.02,130.98 L 376.07,140.07 L 422.00,143.00 L 376.07,145.93 L 381.02,155.02 L 371.93,150.07 L 369.00,196.00 L 366.07,150.07 L 356.98,155.02 L 361.93,145.93 L 316.00,143.00 L 361.93,140.07 L 356.98,130.98 L 366.07,135.93 Z" fill="url(#silver)"/>
+  <path d="M 300,240 L 313,253 L 300,266 L 287,253 Z" fill="url(#silver)"/>
+</g>
+<path d="M520,190 V310 H576" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linecap="square"/>
+<path d="M612,190 V282 Q612,310 646,310 Q680,310 680,282 V190" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linecap="round"/>
+<path d="M716,310 V190 L786,310 V190" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linejoin="round"/>
+<path d="M824,310 L860,190 L896,310" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linejoin="round"/>
+<path d="M932,310 V190 H966 Q997,190 997,217 Q997,244 966,244 H932 M966,244 L1002,310" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linejoin="round"/>
+<path d="M1095,190 H1037 V310 H1095 M1037,240 H1085" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linecap="square"/>
+<ellipse cx="1168" cy="240" rx="34" ry="48" fill="none" stroke="#FFFFFF" stroke-width="5.0"/>
+<path d="M1303,200 Q1290,190 1273,190 Q1243,190 1243,216 Q1243,235 1275,240 Q1306,245 1306,267 Q1306,310 1273,310 Q1253,310 1240,300" fill="none" stroke="#FFFFFF" stroke-width="5.0" stroke-linecap="round"/>
+</svg>

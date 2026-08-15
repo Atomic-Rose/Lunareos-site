@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Layout — page shell, header, footer, and the section scaffolding.
+
+   Composition: a centred content shell on a continuous midnight ground.
+   Sections are separated by hairlines and by changes in rhythm — full-bleed
+   hero, horizontal status strip, card grid, column blocks, centred panel —
+   rather than by swapping background colours.
+   ========================================================================== */
+
+/* --- Shell ---------------------------------------------------------------- */
+
+.shell {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  position: relative;
+  padding-block: var(--band);
+}
+
+.section--tight {
+  padding-block: var(--band-tight);
+}
+
+.section--hairline {
+  border-top: 1px solid var(--border);
+}
+
+/* --- Section headings ----------------------------------------------------- */
+
+.section-head {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  max-width: 48rem;
+}
+
+.section-head--center {
+  margin-inline: auto;
+  text-align: center;
+}
+
+.section-head .label {
+  margin-bottom: 1.1rem;
+}
+
+/* `ch` is resolved against the element's own font size, so the measure has to
+   be set on the heading itself — putting it on the container would size it in
+   1rem characters and wrap the display type far too early. */
+.section-head h2 {
+  font-size: var(--size-h2);
+  max-width: 20ch;
+}
+
+.section-head p {
+  margin-top: 1.25rem;
+  color: var(--text-muted);
+}
+
+/* --- Header ---------------------------------------------------------------
+   Deliberately opaque: the reversed lockup ships with a baked-in midnight
+   background rectangle, which would show as a solid plate against a
+   translucent, blurred header once content scrolled beneath it. */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-h);
+  background: var(--ground);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.site-header__brand {
+  display: block;
+  flex-shrink: 0;
+}
+
+.site-header__lockup {
+  width: var(--logo-lockup-w);
+  height: auto;
+}
+
+/* Symbol-only fallback, shown below the lockup's minimum legible size. */
+.site-header__symbol {
+  display: none;
+  width: var(--logo-symbol-w);
+  height: auto;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(1.25rem, 2.6vw, 2.25rem);
+}
+
+.site-nav a {
+  font-family: var(--font-mono);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.site-nav a:hover {
+  color: var(--text);
+}
+
+.site-nav a[aria-current='page'] {
+  color: var(--text);
+  position: relative;
+}
+
+.site-nav a[aria-current='page']::before {
+  content: '';
+  position: absolute;
+  left: -0.7rem;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+.site-nav .button {
+  padding: 0.55rem 1rem;
+  font-family: var(--font-sans);
+  font-size: var(--size-small);
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--white);
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding-block: var(--band-tight) 2rem;
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  padding-bottom: clamp(3rem, 6vw, 4.5rem);
+}
+
+.site-footer__brand img {
+  width: var(--logo-lockup-w);
+  height: auto;
+}
+
+.site-footer__tagline {
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+  font-size: var(--size-small);
+  max-width: 34ch;
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: 2.5rem;
+}
+
+.site-footer__col .label {
+  margin-bottom: 1.1rem;
+}
+
+.site-footer__col li + li {
+  margin-top: 0.65rem;
+}
+
+.site-footer__col a {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+  transition: color 0.2s var(--ease);
+}
+
+.site-footer__col a:hover {
+  color: var(--text);
+}
+
+/* Colophon: the technical footnote. What the site does and doesn't do is
+   itself part of the studio's position, so it gets stated plainly. */
+.site-footer__colophon {
+  font-size: var(--size-small);
+  line-height: 1.65;
+  color: var(--text-muted);
+  max-width: 40ch;
+}
+
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 860px) {
+  .site-footer__top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Below this width the lockup would render under the kit's 140px artwork
+   minimum, so the header switches to the symbol. */
+@media (max-width: 700px) {
+  .site-header__lockup {
+    display: none;
+  }
+
+  .site-header__symbol {
+    display: block;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-nav {
+    gap: 1rem;
+  }
+
+  .site-nav .button {
+    padding: 0.5rem 0.85rem;
+  }
+}

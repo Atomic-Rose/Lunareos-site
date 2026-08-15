@@ -1,0 +1,125 @@
+---
+import Base from '../layouts/Base.astro'
+import { SITE } from '../site'
+
+const method = [
+  {
+    label: 'First',
+    title: 'Decide what it refuses to do',
+    body: "Scope is the first design decision and the one that echoes longest. We'd rather cut something early than carry it for a decade.",
+  },
+  {
+    label: 'Then',
+    title: 'Build the real thing quickly',
+    body: 'Working software answers questions that documents only postpone. We get to something you can actually use, then spend the time where it shows.',
+  },
+  {
+    label: 'Always',
+    title: 'Keep it running',
+    body: 'Shipping is where the obligation starts. Maintenance is planned work here, not an interruption to the interesting part.',
+  },
+]
+---
+
+<Base
+  title="Studio"
+  description="Lunareos LLC is a small independent software studio building local-first applications with care, curiosity, and a long time horizon."
+  ogTitle="The Lunareos studio"
+>
+  <!-- ===== Page hero ===================================================== -->
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="glow page-hero__glow" aria-hidden="true"></div>
+    <div class="shell page-hero__inner">
+      <p class="label label--accent">The studio</p>
+      <h1 class="page-hero__title" id="page-title">
+        Small on purpose. Ambitious about the work.
+      </h1>
+      <p class="lede page-hero__lede">
+        Lunareos LLC is an independent software studio. We make focused
+        applications for people who care how their tools behave — and we take
+        the time to get them right.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Why ============================================================ -->
+  <section class="section section--hairline" aria-labelledby="why-title">
+    <div class="shell editorial">
+      <div>
+        <p class="label">Why we exist</p>
+        <h2 class="editorial__title" id="why-title">Less noise. More room to think.</h2>
+      </div>
+      <div>
+        <p class="prose">
+          A lot of software is designed to be used constantly rather than used
+          well. It asks for an account before it does anything, moves your work
+          onto someone else's computer, and treats your attention as the thing
+          it's really selling.
+        </p>
+        <p class="prose">
+          We wanted to make the other kind: capable without being complicated,
+          considered without being precious, calm without giving up any power.
+          So we start with the person and the work in front of them, and shape
+          everything else around that.
+        </p>
+        <p class="prose">
+          It's a slower way to build. We think the results are worth it, and
+          we're in no particular hurry.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Measure ======================================================== -->
+  <section class="section quote" aria-labelledby="measure-title">
+    <div class="glow quote__glow" aria-hidden="true"></div>
+    <div class="shell quote__inner">
+      <p class="label label--accent">Our measure</p>
+      <h2 class="quote__text" id="measure-title">
+        Does this help someone do their work well?
+      </h2>
+      <p class="quote__note">
+        Every decision gets tested against that one question. It rules out a
+        surprising amount — growth mechanics, engagement loops, most
+        notifications, and very nearly every feature added because a competitor
+        shipped it first.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Method ========================================================= -->
+  <section class="section section--hairline" aria-labelledby="method-title">
+    <div class="shell">
+      <div class="section-head">
+        <p class="label label--accent">How the work goes</p>
+        <h2 id="method-title">Three habits, applied stubbornly.</h2>
+      </div>
+
+      <div class="blocks">
+        {
+          method.map((item) => (
+            <article class="block">
+              <p class="label">{item.label}</p>
+              <h3 class="block__title">{item.title}</h3>
+              <p class="block__body">{item.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ======================================================== -->
+  <section class="section contact" aria-labelledby="about-contact-title">
+    <div class="glow contact__glow" aria-hidden="true"></div>
+    <div class="shell contact__inner">
+      <p class="label label--accent">Get in touch</p>
+      <h2 class="contact__title" id="about-contact-title">
+        We'd like to hear from you.
+      </h2>
+      <a class="contact__address" href={`mailto:${SITE.email}`}>
+        {SITE.email} <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+</Base>

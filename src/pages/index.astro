@@ -1,0 +1,181 @@
+---
+import Base from '../layouts/Base.astro'
+import { SITE } from '../site'
+
+const status = [
+  { field: 'Studio', value: 'Lunareos LLC — independent' },
+  { field: 'Practice', value: 'Design, engineering, care' },
+  { field: 'Currently', value: 'Building our first product' },
+]
+
+const beliefs = [
+  {
+    title: 'Your work belongs to you',
+    body: 'It lives on your machine, in a format you can open without us. Sync when you want it — never as the price of getting in the door.',
+  },
+  {
+    title: 'Start working immediately',
+    body: 'No account, no onboarding tour, no setup wizard standing between you and the thing you opened the app to do.',
+  },
+  {
+    title: 'Judgement over automation',
+    body: "We make tools that leave you sharper. Where a model genuinely helps, it's explicit, optional, and quiet until you ask for it.",
+  },
+  {
+    title: 'Built for the long run',
+    body: "We'd rather make fewer things and keep them alive. Software you can still rely on in ten years is the entire point.",
+  },
+]
+
+const practice = [
+  {
+    label: 'Design',
+    title: 'How it should feel',
+    body: 'Interface and interaction, and the harder questions underneath them: what is this really for, and what should it refuse to do?',
+  },
+  {
+    label: 'Engineering',
+    title: 'How it should hold up',
+    body: 'Native and web applications, built to be read and changed by whoever comes next — including us, three years from now.',
+  },
+  {
+    label: 'Care',
+    title: 'What comes after',
+    body: 'The long tail nobody puts on a landing page. Fixes, upkeep, and still being here a good while after the launch.',
+  },
+]
+---
+
+<Base ogTitle="Lunareos — Independent software studio">
+  <!-- ===== Hero ========================================================== -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="glow hero__glow" aria-hidden="true"></div>
+
+    <div class="shell hero__inner">
+      <p class="label hero__eyebrow">Software · Design · Imagination</p>
+
+      <div class="hero__copy">
+        <h1 class="hero__title" id="hero-title">Software that stays yours.</h1>
+
+        <p class="lede hero__lede">
+          Lunareos is a small studio with a long horizon. We make tools that
+          live on your machine, keep hold of your work, and are meant to be
+          good company for years — not just for a launch week.
+        </p>
+
+        <div class="hero__actions">
+          <a class="button" href={`mailto:${SITE.email}`}>
+            Say hello <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="link" href="/about/">
+            About the studio <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </div>
+
+      {/* The brand symbol, unmodified, sitting in front of the glow layer —
+          the kit forbids compositing a glow onto the artwork itself. */}
+      <div class="hero__mark" aria-hidden="true">
+        <img src="/lunareos-symbol-silver.svg" alt="" width="512" height="512" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Status strip ================================================== -->
+  <div class="shell">
+    <dl class="statusbar">
+      {
+        status.map((item) => (
+          <div class="statusbar__cell">
+            <dt class="label">{item.field}</dt>
+            <dd>{item.value}</dd>
+          </div>
+        ))
+      }
+      <div class="statusbar__cell">
+        <dt class="label">Contact</dt>
+        <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+      </div>
+    </dl>
+  </div>
+
+  <!-- ===== Beliefs ======================================================= -->
+  <section class="section" aria-labelledby="beliefs-title">
+    <div class="shell">
+      <div class="section-head">
+        <p class="label label--accent">What we believe</p>
+        <h2 id="beliefs-title">A few things we're not willing to trade away.</h2>
+      </div>
+
+      <ul class="card-grid">
+        {
+          beliefs.map((item, i) => (
+            <li class="card">
+              <span class="card__num" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="card__title">{item.title}</h3>
+              <p class="card__body">{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===== Practice ====================================================== -->
+  <section class="section section--hairline" aria-labelledby="practice-title">
+    <div class="shell">
+      <div class="section-head">
+        <p class="label label--accent">What we do</p>
+        <h2 id="practice-title">Design and engineering, treated as one job.</h2>
+      </div>
+
+      <div class="blocks">
+        {
+          practice.map((item) => (
+            <article class="block">
+              <p class="label">{item.label}</p>
+              <h3 class="block__title">{item.title}</h3>
+              <p class="block__body">{item.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Currently ===================================================== -->
+  <section class="section section--tight" aria-labelledby="currently-title">
+    <div class="shell">
+      <div class="panel">
+        <div class="glow panel__glow" aria-hidden="true"></div>
+        <p class="label label--accent">Currently</p>
+        <h2 class="panel__title" id="currently-title">
+          We're building our first product.
+        </h2>
+        <p class="panel__body">
+          It isn't ready to talk about yet, and we'd rather show you than
+          describe it. If you'd like to hear when it is, just say so — there's
+          no list and no drip campaign, only one of us writing back.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact ======================================================= -->
+  <section class="section contact" id="contact" aria-labelledby="contact-title">
+    <div class="glow contact__glow" aria-hidden="true"></div>
+    <div class="shell contact__inner">
+      <p class="label label--accent">Get in touch</p>
+      <h2 class="contact__title" id="contact-title">Tell us what you're making.</h2>
+      <p class="contact__body">
+        Questions, ideas, collaborations, or a note about the work — it all
+        reaches a person, and you'll get a real reply.
+      </p>
+      <a class="contact__address" href={`mailto:${SITE.email}`}>
+        {SITE.email} <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+</Base>

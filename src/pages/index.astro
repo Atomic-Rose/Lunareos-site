@@ -3,9 +3,9 @@ import Base from '../layouts/Base.astro'
 import { SITE } from '../site'
 
 /*
- * Copy on this page is approved verbatim. Don't rewrite it.
- * The studio section lives here rather than on its own page — the nav and
- * footer point at #studio.
+ * Copy on this page is approved. Don't rewrite it.
+ * Two sections only: hero, then contact. See the README for the rules the
+ * copy was written to.
  */
 ---
 
@@ -20,8 +20,8 @@ import { SITE } from '../site'
       <div class="hero__copy">
         <h1 class="hero__title" id="hero-title">Lunareos builds its own software.</h1>
         <p class="lede hero__lede">
-          An independent studio building specialized tools, engineered properly
-          for the work they support.
+          An independent studio. We make our own products, and they don't all
+          belong to the same industry.
         </p>
       </div>
 
@@ -33,28 +33,6 @@ import { SITE } from '../site'
     </div>
   </section>
 
-  <!-- ===== Studio ======================================================== -->
-  <section class="section section--hairline" id="studio" aria-labelledby="studio-title">
-    <div class="shell editorial">
-      <div>
-        <p class="label label--accent">Studio</p>
-        <h2 class="editorial__title" id="studio-title">
-          Useful, needed, and properly engineered.
-        </h2>
-      </div>
-      <div>
-        <p class="lede">
-          Build what is useful, build what is needed, and engineer it properly
-          for its context.
-        </p>
-        <p class="prose">
-          That is why Lunareos does not stay inside one field. The context sets
-          the standard, and the standard does not move.
-        </p>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== Contact ======================================================= -->
   <section class="section section--hairline contact" id="contact" aria-labelledby="contact-title">
     <div class="glow contact__glow" aria-hidden="true"></div>
@@ -62,7 +40,7 @@ import { SITE } from '../site'
       <p class="label label--accent">Contact</p>
       <h2 class="contact__title" id="contact-title">Get in touch.</h2>
       <p class="contact__body">
-        For questions about a project, or a problem that belongs in one.
+        It's a small studio, so this goes straight to us.
       </p>
       <a class="contact__address" href={`mailto:${SITE.email}`}>
         {SITE.email} <span class="arrow" aria-hidden="true">↗</span>

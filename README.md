@@ -32,8 +32,13 @@ src/
 public/                 Copied verbatim to the site root (logos, favicon, CNAME)
 ```
 
-The home page is a **single page**: hero, studio, contact. The nav and footer
-point at `#studio` and `#contact`; `/privacy/` is the only separate route.
+The home page is **two sections**: hero, then contact. `/privacy/` is the only
+separate route, and the only page still using the `.editorial` two-column
+layout.
+
+The header carries **no navigation** — with a two-section page there is nowhere
+to navigate, so it holds the logo and a single Email button. If a real second
+destination ever appears, the nav comes back with it.
 
 ## Design
 
@@ -126,13 +131,17 @@ blank previews.
 
 - `src/pages/privacy.astro` is a **placeholder**. It needs legal review before
   any product ships, and its `LAST_UPDATED` constant should be bumped on edit.
-- **Body copy is approved and verbatim. Do not rewrite it**, and don't pad the
-  page with new prose. If a section needs a heading that isn't in the approved
-  text, leave it out or use a plain one-word label rather than carving a
-  headline out of a sentence that then repeats below it.
-- The footer tagline ("An independent studio crafting software that works") is
-  the only string that isn't a direct quote from the approved copy. Change it
-  if it isn't wanted.
+- **Body copy is approved. Do not rewrite it**, and don't pad the page with new
+  prose. Three rules it was written to, worth keeping if it changes again:
+  - **Lunareos builds its own products.** There is no client work, so nothing
+    on the page should invite a project or brief.
+  - **A heading must not paraphrase the sentence beside it.** Compressing the
+    prose into the heading above it makes a reader hear the same idea twice.
+  - **The h1 names the company; the body speaks as "we."** Third person
+    throughout reads like a press release about someone else.
+- **No product or industry is named**, by choice. The home page is currently a
+  statement and an email address — it makes no argument, so there is nothing on
+  it to disbelieve. Any section added back has to earn its place against that.
 - CSS is kept free of dead rules: when a section is removed, its styles go with
   it. `scratchpad/unused.mjs` in the working session cross-checked class names
   against the markup — worth re-running after any structural change.

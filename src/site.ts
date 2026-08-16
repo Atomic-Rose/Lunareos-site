@@ -10,16 +10,10 @@ export const SITE = {
   email: 'hello@lunareos.com',
   tagline: 'Software · Design · Imagination',
   description:
-    'Lunareos is an independent software studio building specialized tools, engineered properly for the work they support.',
+    'Lunareos is an independent studio that builds its own software. We make our own products, and they don’t all belong to the same industry.',
 } as const
 
-export const NAV = [
-  { label: 'Studio', href: '/#studio' },
-  { label: 'Contact', href: '/#contact' },
-] as const
-
 export const FOOTER_LINKS = [
-  { label: 'Studio', href: '/#studio' },
   { label: 'Contact', href: '/#contact' },
   { label: 'Privacy', href: '/privacy/' },
 ] as const

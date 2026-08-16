@@ -101,15 +101,6 @@ a {
   text-wrap: pretty;
 }
 
-.prose {
-  color: var(--text-muted);
-  max-width: var(--measure);
-}
-
-.prose + .prose {
-  margin-top: 1.25rem;
-}
-
 /* Solid button — used once per page at most. */
 .button {
   display: inline-flex;

@@ -81,7 +81,8 @@
   height: auto;
 }
 
-/* --- Editorial: label + statement on the left, prose on the right --------- */
+/* --- Editorial: label on the left, document on the right ------------------ */
+/* Used only by /privacy/. Top-aligned, because the right column is long. */
 
 .editorial {
   display: grid;
@@ -92,21 +93,6 @@
 
 .editorial .label {
   margin-bottom: 1.1rem;
-}
-
-.editorial__title {
-  font-size: var(--size-statement);
-  line-height: 1.16;
-  letter-spacing: -0.025em;
-}
-
-.editorial .lede {
-  max-width: 52ch;
-}
-
-.editorial .prose {
-  margin-top: 1.25rem;
-  max-width: 52ch;
 }
 
 /* --- Contact -------------------------------------------------------------- */

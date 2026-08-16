@@ -131,6 +131,11 @@ blank previews.
 
 - `src/pages/privacy.astro` is a **placeholder**. It needs legal review before
   any product ships, and its `LAST_UPDATED` constant should be bumped on edit.
+  The caveat lives in that file's frontmatter, not on the page.
+- **Comments must not ship.** Astro renders `<!-- -->` into the output but
+  strips `{/* */}` and frontmatter `//`, so use the latter two. Internal notes
+  are for the repo, not for view-source. `grep -c '<!--' dist/**/*.html`
+  should return 0.
 - **Body copy is approved. Do not rewrite it**, and don't pad the page with new
   prose. Three rules it was written to, worth keeping if it changes again:
   - **Lunareos builds its own products.** There is no client work, so nothing

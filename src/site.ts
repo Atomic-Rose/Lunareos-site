@@ -9,8 +9,9 @@ export const SITE = {
   url: 'https://lunareos.com',
   email: 'hello@lunareos.com',
   tagline: 'Software · Design · Imagination',
+  // Same sentence as the hero lede, verbatim. Keep the two in sync.
   description:
-    'Lunareos is an independent studio that builds its own software. We make our own products, and they don’t all belong to the same industry.',
+    'Lunareos is an independent studio exploring ideas, problems, and possibilities through software.',
 } as const
 
 export const FOOTER_LINKS = [

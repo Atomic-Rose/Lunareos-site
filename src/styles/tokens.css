@@ -77,7 +77,9 @@
   --font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --size-display: clamp(2rem, 4.2vw, 3.75rem);
+  /* Ceiling is set so the hero headline holds one line inside its grid column
+     (792px at wide viewports). Raising it wraps the headline. */
+  --size-display: clamp(2rem, 4.2vw, 3.375rem);
   --size-h1: clamp(2.25rem, 5vw, 4rem);
   --size-h3: clamp(1.125rem, 1.5vw, 1.375rem);
   --size-lede: clamp(1.0625rem, 1.45vw, 1.3125rem);

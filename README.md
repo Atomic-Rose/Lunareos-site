@@ -123,8 +123,18 @@ blank previews.
 
 - `src/pages/privacy.astro` is a **placeholder**. It needs legal review before
   any product ships, and its `LAST_UPDATED` constant should be bumped on edit.
-- Body copy across the site is a first draft written to establish the
-  positioning. Read it as a proposal, not as finished messaging.
+- **Body copy is approved and verbatim. Do not rewrite it.** The home and
+  studio pages carry the client's own words; the only editorial changes are
+  paragraph breaks and pulling the closing sentence out as a standalone
+  statement. If a section needs a heading that isn't in the approved text,
+  leave it out or use a plain one-word label rather than carving a headline
+  out of a sentence that then repeats below it.
+- Two short strings are compressions of the approved copy rather than direct
+  quotes, both written for length limits: the `<title>` tag ("Specialized tools
+  for interesting problems") and the footer tagline ("An independent studio
+  crafting software that works"). Change them if they're not wanted.
+- The home page is deliberately short — hero, facts strip, contact. The
+  philosophy lives on `/about/`. Don't pad it with new prose.
 - **Typeface is unresolved.** Brand Kit v4 recommends Poppins or Jost for UI and
   body copy. The site sets Inter Tight, chosen before that guidance existed.
   Both recommendations are geometric sans faces, which match the wordmark's

@@ -59,9 +59,11 @@
   background: linear-gradient(to right, var(--border-lift), transparent);
 }
 
+/* The headline is a full sentence rather than a short phrase, so it is set
+   below --size-display and given a wider measure. */
 .hero__title {
-  font-size: var(--size-display);
-  max-width: 14ch;
+  font-size: clamp(1.75rem, 3.6vw, 3.25rem);
+  max-width: 30ch;
 }
 
 .hero__lede {
@@ -383,43 +385,6 @@
 
 .editorial .label {
   margin-bottom: 1.1rem;
-}
-
-/* --- Quote: a large claim, no box ----------------------------------------- */
-
-.quote {
-  position: relative;
-  text-align: center;
-  overflow: clip;
-}
-
-.quote__glow {
-  width: min(110vw, 900px);
-  aspect-ratio: 1;
-  left: 50%;
-  top: 50%;
-  translate: -50% -50%;
-  background: var(--glow);
-  opacity: 0.4;
-  filter: blur(30px);
-}
-
-.quote__inner {
-  position: relative;
-  z-index: 1;
-}
-
-.quote__text {
-  margin-top: 1.25rem;
-  font-size: var(--size-h1);
-  max-width: 20ch;
-  margin-inline: auto;
-}
-
-.quote__note {
-  margin: 1.75rem auto 0;
-  color: var(--text-muted);
-  max-width: 50ch;
 }
 
 /* --- Legal / long-form prose ---------------------------------------------- */

@@ -57,6 +57,36 @@
   color: var(--text-muted);
 }
 
+/* For sections whose heading is a full sentence rather than a short phrase.
+   The statement is set large enough to carry the width of the page, and the
+   supporting line is stepped in beneath it so the block reads as a composition
+   rather than as text stranded in the top-left corner. */
+.section-head--statement {
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.section-head--statement h2 {
+  font-size: clamp(1.625rem, 3.2vw, 2.75rem);
+  line-height: 1.16;
+  letter-spacing: -0.025em;
+  max-width: 24ch;
+}
+
+/* `:not(.label)` matters — the eyebrow is a <p> as well, and must stay flush
+   left rather than picking up the step-in. */
+.section-head--statement p:not(.label) {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  margin-left: 34%;
+  max-width: 46ch;
+}
+
+@media (max-width: 860px) {
+  .section-head--statement p:not(.label) {
+    margin-left: 0;
+  }
+}
+
 /* --- Header ---------------------------------------------------------------
    v4's silver lockup is transparent, so the header can blur what scrolls
    beneath it. (v2's reversed lockup had a midnight rectangle baked in, which
@@ -194,15 +224,6 @@
 
 .site-footer__col a:hover {
   color: var(--text);
-}
-
-/* Colophon: the technical footnote. What the site does and doesn't do is
-   itself part of the studio's position, so it gets stated plainly. */
-.site-footer__colophon {
-  font-size: var(--size-small);
-  line-height: 1.65;
-  color: var(--text-muted);
-  max-width: 40ch;
 }
 
 .site-footer__bottom {

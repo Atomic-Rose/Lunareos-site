@@ -10,7 +10,7 @@ export const SITE = {
   email: 'hello@lunareos.com',
   tagline: 'Software · Design · Imagination',
   description:
-    'Lunareos is a small independent software studio making local-first tools that keep your work where you put it.',
+    'Lunareos builds specialized tools to solve interesting problems, regardless of the industry.',
 } as const
 
 export const NAV = [

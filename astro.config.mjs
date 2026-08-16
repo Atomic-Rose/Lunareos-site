@@ -1,9 +1,10 @@
 import { defineConfig } from 'astro/config'
 
-// Static site, custom domain at the apex (see public/CNAME).
-// `format: 'directory'` keeps clean URLs: /about/ rather than /about.html
+// GitHub Pages project site. Keep this base in sync with the repository name.
+// `format: 'directory'` keeps clean URLs: /privacy/ rather than /privacy.html.
 export default defineConfig({
-  site: 'https://lunareos.com',
+  site: 'https://atomic-rose.github.io',
+  base: '/Lunareos-site',
   build: {
     format: 'directory',
   },

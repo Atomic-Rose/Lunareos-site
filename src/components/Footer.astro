@@ -1,5 +1,5 @@
 ---
-import { SITE, FOOTER_LINKS } from '../site'
+import { SITE, FOOTER_LINKS, withBase } from '../site'
 
 const year = new Date().getFullYear()
 ---
@@ -8,9 +8,9 @@ const year = new Date().getFullYear()
   <div class="shell">
     <div class="site-footer__top">
       <div>
-        <a class="site-footer__brand" href="/" aria-label="Lunareos — home">
+        <a class="site-footer__brand" href={withBase('/')} aria-label="Lunareos — home">
           <img
-            src="/lunareos-logo-horizontal-silver.svg"
+            src={withBase('/lunareos-logo-horizontal-silver.svg')}
             alt="Lunareos"
             width="1614"
             height="399"

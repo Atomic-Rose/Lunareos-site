@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro'
-import { SITE } from '../site'
+import { SITE, withBase } from '../site'
 
 /*
  * Copy on this page is approved. Don't rewrite it.
@@ -28,7 +28,7 @@ import { SITE } from '../site'
       {/* The brand symbol, unmodified, sitting in front of the glow layer —
           the kit forbids compositing a glow onto the artwork itself. */}
       <div class="hero__mark" aria-hidden="true">
-        <img src="/lunareos-symbol-silver.svg" alt="" width="185" height="185" />
+        <img src={withBase('/lunareos-symbol-silver.svg')} alt="" width="185" height="185" />
       </div>
     </div>
   </section>

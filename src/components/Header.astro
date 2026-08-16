@@ -1,5 +1,5 @@
 ---
-import { SITE } from '../site'
+import { SITE, withBase } from '../site'
 ---
 
 <header class="site-header">
@@ -9,17 +9,17 @@ import { SITE } from '../site'
       fall below the brand kit's 140px artwork minimum. Below that the kit's
       guidance is symbol-only (24px minimum), not a shrunken lockup.
     */}
-    <a class="site-header__brand" href="/" aria-label="Lunareos — home">
+    <a class="site-header__brand" href={withBase('/')} aria-label="Lunareos — home">
       <img
         class="site-header__lockup"
-        src="/lunareos-logo-horizontal-silver.svg"
+        src={withBase('/lunareos-logo-horizontal-silver.svg')}
         alt="Lunareos"
         width="1614"
         height="399"
       />
       <img
         class="site-header__symbol"
-        src="/lunareos-symbol-silver.svg"
+        src={withBase('/lunareos-symbol-silver.svg')}
         alt="Lunareos"
         width="185"
         height="185"

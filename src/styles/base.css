@@ -110,33 +110,6 @@ a {
   margin-top: 1.25rem;
 }
 
-/* Inline link with a nudging arrow on hover. */
-.link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.55rem;
-  font-size: var(--size-small);
-  color: var(--text);
-  border-bottom: 1px solid var(--border-lift);
-  padding-bottom: 0.3rem;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
-}
-
-.link:hover {
-  color: var(--accent-text);
-  border-color: var(--accent);
-}
-
-.link .arrow,
-.button .arrow {
-  transition: transform 0.2s var(--ease);
-}
-
-.link:hover .arrow,
-.button:hover .arrow {
-  transform: translate(2px, -2px);
-}
-
 /* Solid button — used once per page at most. */
 .button {
   display: inline-flex;
@@ -154,6 +127,14 @@ a {
 .button:hover {
   background: var(--accent-fill-hover);
   box-shadow: 0 0 0 1px var(--accent), 0 8px 32px rgba(79, 109, 255, 0.35);
+}
+
+.button .arrow {
+  transition: transform 0.2s var(--ease);
+}
+
+.button:hover .arrow {
+  transform: translate(2px, -2px);
 }
 
 /* --- Accessibility -------------------------------------------------------- */

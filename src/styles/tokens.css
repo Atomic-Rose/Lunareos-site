@@ -68,14 +68,18 @@
      Two families only. The grotesque carries everything visible; the mono
      carries structure — indices, labels, metadata, status.
 
+     Jost is the brand kit's recommended pairing for the wordmark: both are
+     geometric, so the UI type echoes the letterforms rather than sitting
+     beside them.
+
      Note: the wordmark in the logo files is drawn as vector strokes, not set
      type, so it has no font dependency and must never be re-set in these. */
-  --font-sans: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --size-display: clamp(2.75rem, 7vw, 6rem);
+  --size-display: clamp(2rem, 4.2vw, 3.75rem);
   --size-h1: clamp(2.25rem, 5vw, 4rem);
-  --size-h2: clamp(1.875rem, 3.6vw, 3rem);
+  --size-statement: clamp(1.5rem, 2.6vw, 2.25rem);
   --size-h3: clamp(1.125rem, 1.5vw, 1.375rem);
   --size-lede: clamp(1.0625rem, 1.45vw, 1.3125rem);
   --size-body: 1rem;

@@ -20,7 +20,7 @@ const { title, description = SITE.description, ogTitle } = Astro.props
 
 const pageTitle = title
   ? `${title} — ${SITE.name}`
-  : `${SITE.name} — Specialized tools for interesting problems`
+  : `${SITE.name} — Independent software studio`
 const canonical = new URL(Astro.url.pathname, SITE.url).href
 ---
 
@@ -58,7 +58,7 @@ const canonical = new URL(Astro.url.pathname, SITE.url).href
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
     />
   </head>
 

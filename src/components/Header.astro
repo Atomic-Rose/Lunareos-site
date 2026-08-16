@@ -1,8 +1,5 @@
 ---
 import { NAV, SITE } from '../site'
-
-// Normalise so '/about' and '/about/' both mark the same nav item current.
-const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
 ---
 
 <header class="site-header">
@@ -30,17 +27,8 @@ const path = Astro.url.pathname.replace(/\/+$/, '') || '/'
     </a>
 
     <nav class="site-nav" aria-label="Primary">
-      {
-        NAV.map((item) => (
-          <a
-            href={item.href}
-            aria-current={item.href.replace(/\/+$/, '') === path ? 'page' : undefined}
-          >
-            {item.label}
-          </a>
-        ))
-      }
-      <a class="button" href={`mailto:${SITE.email}`}>Say hello</a>
+      {NAV.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a class="button" href={`mailto:${SITE.email}`}>Email</a>
     </nav>
   </div>
 </header>

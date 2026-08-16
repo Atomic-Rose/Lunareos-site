@@ -2,9 +2,8 @@
    Layout — page shell, header, footer, and the section scaffolding.
 
    Composition: a centred content shell on a continuous midnight ground.
-   Sections are separated by hairlines and by changes in rhythm — full-bleed
-   hero, horizontal status strip, card grid, column blocks, centred panel —
-   rather than by swapping background colours.
+   Sections are separated by hairlines rather than by swapping background
+   colours — full-bleed hero, editorial two-column, centred contact.
    ========================================================================== */
 
 /* --- Shell ---------------------------------------------------------------- */
@@ -20,71 +19,8 @@
   padding-block: var(--band);
 }
 
-.section--tight {
-  padding-block: var(--band-tight);
-}
-
 .section--hairline {
   border-top: 1px solid var(--border);
-}
-
-/* --- Section headings ----------------------------------------------------- */
-
-.section-head {
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
-  max-width: 48rem;
-}
-
-.section-head--center {
-  margin-inline: auto;
-  text-align: center;
-}
-
-.section-head .label {
-  margin-bottom: 1.1rem;
-}
-
-/* `ch` is resolved against the element's own font size, so the measure has to
-   be set on the heading itself — putting it on the container would size it in
-   1rem characters and wrap the display type far too early. */
-.section-head h2 {
-  font-size: var(--size-h2);
-  max-width: 20ch;
-}
-
-.section-head p {
-  margin-top: 1.25rem;
-  color: var(--text-muted);
-}
-
-/* For sections whose heading is a full sentence rather than a short phrase.
-   The statement is set large enough to carry the width of the page, and the
-   supporting line is stepped in beneath it so the block reads as a composition
-   rather than as text stranded in the top-left corner. */
-.section-head--statement {
-  max-width: none;
-  margin-bottom: 0;
-}
-
-.section-head--statement h2 {
-  font-size: clamp(1.625rem, 3.2vw, 2.75rem);
-  line-height: 1.16;
-  letter-spacing: -0.025em;
-  max-width: 24ch;
-}
-
-/* `:not(.label)` matters — the eyebrow is a <p> as well, and must stay flush
-   left rather than picking up the step-in. */
-.section-head--statement p:not(.label) {
-  margin-top: clamp(2rem, 4vw, 3rem);
-  margin-left: 34%;
-  max-width: 46ch;
-}
-
-@media (max-width: 860px) {
-  .section-head--statement p:not(.label) {
-    margin-left: 0;
-  }
 }
 
 /* --- Header ---------------------------------------------------------------
@@ -147,24 +83,6 @@
 
 .site-nav a:hover {
   color: var(--text);
-}
-
-.site-nav a[aria-current='page'] {
-  color: var(--text);
-  position: relative;
-}
-
-.site-nav a[aria-current='page']::before {
-  content: '';
-  position: absolute;
-  left: -0.7rem;
-  top: 50%;
-  width: 3px;
-  height: 3px;
-  translate: 0 -50%;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
 }
 
 .site-nav .button {

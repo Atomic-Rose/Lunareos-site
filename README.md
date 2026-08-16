@@ -23,14 +23,17 @@ src/
   site.ts               Shared constants — nav, email, company name
   layouts/Base.astro    <head>, header, footer, global CSS imports
   components/           Header, Footer
-  pages/                One file per route (index, about, privacy)
+  pages/                index.astro (single page) + privacy.astro
   styles/
     tokens.css          Colour, type, and spacing variables — edit here first
-    base.css            Reset, document defaults, type primitives, .button/.link
+    base.css            Reset, document defaults, type primitives, .button
     layout.css          Shell, header/footer, section scaffolding
-    components.css      Hero, status strip, cards, blocks, panel, contact, legal
+    components.css      Hero, editorial, contact, page-hero, legal
 public/                 Copied verbatim to the site root (logos, favicon, CNAME)
 ```
+
+The home page is a **single page**: hero, studio, contact. The nav and footer
+point at `#studio` and `#contact`; `/privacy/` is the only separate route.
 
 ## Design
 
@@ -38,17 +41,19 @@ The site is **midnight-dominant**, matching the identity: the brand board, the
 app icons, and the favicon are all dark grounds, and the silver crescent only
 resolves against one.
 
-Sections sit on one continuous midnight ground and are separated by hairlines
-and by changes in rhythm — full-bleed hero, horizontal status strip, 2×2 card
-grid, column blocks, centred panel — rather than by swapping background colours.
+Sections sit on one continuous midnight ground, separated by hairlines rather
+than by swapping background colours: full-bleed hero, editorial two-column,
+centred contact.
 
-Two typefaces only: **Inter Tight** for everything visible, **JetBrains Mono**
-for structure (labels, indices, metadata).
+Two typefaces only: **Jost** for everything visible, **JetBrains Mono** for
+structure (labels, metadata). Jost is the brand kit's recommended pairing —
+both it and the wordmark are geometric, so the UI type echoes the letterforms
+instead of sitting beside them.
 
 ### The glow
 
 `--glow` / `.glow` is the site's one atmospheric device — a soft accent radial
-behind the hero mark, the "Currently" panel, and the contact block.
+behind the hero mark and the contact block.
 
 It is always a background layer behind content, **never composited onto logo
 artwork**, which the kit's rules explicitly forbid. (Brand Kit v2 declared this
@@ -109,9 +114,7 @@ The wordmark is a custom monoline drawing, not a typeface — **only nine glyphs
 exist** (`L U N A R E O S M`). It has no font dependency and its wide spacing
 must not be condensed.
 
-> **Open decision:** the kit recommends pairing it with **Poppins** or **Jost**.
-> The site currently sets Inter Tight, a neo-grotesque, against a geometric
-> monoline wordmark. See the note at the bottom of this file.
+The kit recommends pairing it with Poppins or Jost; the site uses **Jost**.
 
 ### Link preview
 
@@ -123,19 +126,13 @@ blank previews.
 
 - `src/pages/privacy.astro` is a **placeholder**. It needs legal review before
   any product ships, and its `LAST_UPDATED` constant should be bumped on edit.
-- **Body copy is approved and verbatim. Do not rewrite it.** The home and
-  studio pages carry the client's own words; the only editorial changes are
-  paragraph breaks and pulling the closing sentence out as a standalone
-  statement. If a section needs a heading that isn't in the approved text,
-  leave it out or use a plain one-word label rather than carving a headline
-  out of a sentence that then repeats below it.
-- Two short strings are compressions of the approved copy rather than direct
-  quotes, both written for length limits: the `<title>` tag ("Specialized tools
-  for interesting problems") and the footer tagline ("An independent studio
-  crafting software that works"). Change them if they're not wanted.
-- The home page is deliberately short — hero, facts strip, contact. The
-  philosophy lives on `/about/`. Don't pad it with new prose.
-- **Typeface is unresolved.** Brand Kit v4 recommends Poppins or Jost for UI and
-  body copy. The site sets Inter Tight, chosen before that guidance existed.
-  Both recommendations are geometric sans faces, which match the wordmark's
-  monoline geometry more closely than a neo-grotesque does. Worth a look.
+- **Body copy is approved and verbatim. Do not rewrite it**, and don't pad the
+  page with new prose. If a section needs a heading that isn't in the approved
+  text, leave it out or use a plain one-word label rather than carving a
+  headline out of a sentence that then repeats below it.
+- The footer tagline ("An independent studio crafting software that works") is
+  the only string that isn't a direct quote from the approved copy. Change it
+  if it isn't wanted.
+- CSS is kept free of dead rules: when a section is removed, its styles go with
+  it. `scratchpad/unused.mjs` in the working session cross-checked class names
+  against the markup — worth re-running after any structural change.

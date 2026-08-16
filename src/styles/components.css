@@ -84,6 +84,194 @@
   height: auto;
 }
 
+/* --- Section head --------------------------------------------------------
+   A mono heading, a hairline, and optional metadata on the right. Same device
+   as the hero eyebrow, generalised — it is what keeps the middle of the page
+   reading as an index rather than as a stack of marketing blocks. */
+
+.section__head {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5.5vw, 4rem);
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--border-lift), var(--border));
+}
+
+/* Status metadata — the dot is the only ornament on it. */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.status::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+/* --- Featured project ----------------------------------------------------- */
+
+.featured {
+  overflow: clip;
+}
+
+.featured__glow {
+  width: min(110vw, 1000px);
+  aspect-ratio: 1;
+  left: 50%;
+  bottom: -34%;
+  translate: -50% 0;
+  opacity: 0.9;
+  filter: blur(34px);
+}
+
+.featured__inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* Name and summary on the left, the handoff link baseline-aligned right. */
+.feature__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+}
+
+/* Tracked out, not condensed: a product wordmark beside the Lunareos lockup
+   should echo its width rather than fight it. */
+.feature__title {
+  font-size: var(--size-h1);
+  letter-spacing: 0.06em;
+}
+
+.feature__lede {
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  max-width: 34ch;
+  color: var(--text-muted);
+}
+
+.feature__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+  color: var(--accent-text);
+  border-bottom: 1px solid var(--accent-dim);
+  padding-bottom: 0.4rem;
+  transition: border-color 0.2s var(--ease);
+}
+
+.feature__link:hover {
+  border-bottom-color: var(--accent);
+}
+
+.feature__link .arrow {
+  font-size: 0.8em;
+  transition: transform 0.2s var(--ease);
+}
+
+.feature__link:hover .arrow {
+  transform: translate(3px, -3px);
+}
+
+/* The product visual carries the section — full shell width, framed by a
+   hairline rather than by a card. */
+.feature__visual {
+  position: relative;
+  margin: 0;
+  border: 1px solid var(--border-lift);
+  border-radius: var(--radius-lg);
+  overflow: clip;
+  background: var(--surface);
+  box-shadow: 0 40px 90px -40px rgb(0 0 0 / 0.85);
+}
+
+.feature__visual picture {
+  display: block;
+}
+
+.feature__visual img {
+  width: 100%;
+  height: auto;
+}
+
+/* --- Studio index --------------------------------------------------------- */
+
+.index {
+  border-top: 1px solid var(--border);
+}
+
+.index__item {
+  border-bottom: 1px solid var(--border);
+}
+
+/* The negative inline margin stays inside the shell gutter at every width, so
+   the hover field can breathe past the text without causing overflow. */
+.index__row {
+  display: grid;
+  grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.5fr) auto;
+  align-items: center;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem) 0.75rem;
+  margin-inline: -0.75rem;
+  border-radius: var(--radius);
+  transition: background 0.2s var(--ease);
+}
+
+a.index__row:hover {
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
+}
+
+.index__name {
+  font-size: var(--size-h3);
+  transition: color 0.2s var(--ease);
+}
+
+.index__desc {
+  color: var(--text-muted);
+  font-size: var(--size-small);
+  max-width: 46ch;
+}
+
+.index__meta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+}
+
+/* Every kind reads the same weight on purpose: these are labels on the work,
+   not a taxonomy the studio is sorted into. */
+.index__kind {
+  transition: color 0.2s var(--ease);
+}
+
+.index__meta .arrow {
+  color: var(--text-faint);
+  transition: transform 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+a.index__row:hover .index__kind,
+a.index__row:hover .index__meta .arrow {
+  color: var(--accent-text);
+}
+
+a.index__row:hover .index__meta .arrow {
+  transform: translateX(4px);
+}
+
 /* --- Editorial: label on the left, document on the right ------------------ */
 /* Used only by /privacy/. Top-aligned, because the right column is long. */
 
@@ -234,6 +422,64 @@
   .editorial {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
+  }
+}
+
+/* Tablet and below: the index row folds to name + kind on one line, with the
+   description running full width beneath it. */
+@media (max-width: 760px) {
+  .index__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 0.5rem;
+  }
+
+  .index__name {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .index__meta {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .index__desc {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .feature__head {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+  }
+
+  .feature__link {
+    justify-self: start;
+  }
+
+  /* The narrow source is a portrait detail shot. Left at full width it would
+     tower over a tablet; capped, it stays a detail and goes full-bleed only
+     once the viewport is actually narrower than the cap. */
+  .feature__visual {
+    max-width: 26rem;
+    margin-inline: auto;
+  }
+}
+
+/* The status label has nowhere to go beside the heading at this width. */
+@media (max-width: 520px) {
+  .section__head {
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+  }
+
+  .featured .status {
+    margin-left: auto;
+  }
+
+  .featured .rule {
+    order: 3;
+    flex-basis: 100%;
   }
 }
 

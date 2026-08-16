@@ -6,7 +6,7 @@
 export const SITE = {
   name: 'Lunareos',
   legalName: 'Lunareos LLC',
-  url: 'https://atomic-rose.github.io/Lunareos-site',
+  url: 'https://lunareos.com',
   email: 'hello@lunareos.com',
   tagline: 'Software · Design · Imagination',
   // Same sentence as the hero lede, verbatim. Keep the two in sync.

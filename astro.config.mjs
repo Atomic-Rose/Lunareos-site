@@ -1,10 +1,10 @@
 import { defineConfig } from 'astro/config'
 
-// GitHub Pages project site. Keep this base in sync with the repository name.
+// GitHub Pages custom domain, served from the root path.
 // `format: 'directory'` keeps clean URLs: /privacy/ rather than /privacy.html.
 export default defineConfig({
-  site: 'https://atomic-rose.github.io',
-  base: '/Lunareos-site',
+  site: 'https://lunareos.com',
+  base: '/',
   build: {
     format: 'directory',
   },

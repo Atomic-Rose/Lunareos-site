@@ -22,7 +22,7 @@ const pageTitle = title
   ? `${title} — ${SITE.name}`
   : `${SITE.name} — Independent software studio`
 const canonical = Astro.url.href
-const socialImage = new URL(withBase('/og-image.png'), 'https://atomic-rose.github.io').href
+const socialImage = new URL(withBase('/og-image.png'), SITE.url).href
 ---
 
 <!doctype html>

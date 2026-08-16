@@ -47,69 +47,71 @@ for structure (labels, indices, metadata).
 
 ### The glow
 
-Every SVG in the brand kit declares this gradient and none of them use it:
+`--glow` / `.glow` is the site's one atmospheric device — a soft accent radial
+behind the hero mark, the "Currently" panel, and the contact block.
 
-```
-<radialGradient id="glow"> #4F6DFF @ 0.36 → transparent
-```
-
-It's the site's one atmospheric device (`--glow`, `.glow`). It is always a
-background layer behind content — never composited onto logo artwork, which the
-kit's usage rules explicitly forbid.
+It is always a background layer behind content, **never composited onto logo
+artwork**, which the kit's rules explicitly forbid. (Brand Kit v2 declared this
+gradient in all 18 of its SVGs and referenced it in none; v4 removed it as dead
+code. The site keeps the idea as its own, applied only to the page.)
 
 ## Brand
 
-Colour tokens in `src/styles/tokens.css` are copied verbatim from **Lunareos
-Brand Kit v2** (`06-Brand-Guidelines/lunareos-brand-tokens.json`). Change them
-there and let the semantic tokens inherit; don't adjust colours further down.
+Assets and colour tokens come from **Lunareos Brand Kit v4**. Tokens in
+`src/styles/tokens.css` are copied verbatim from
+`06-Brand-Guidelines/lunareos-brand-tokens.json` — change them there and let the
+semantic tokens inherit; don't adjust colours further down.
 
 Logo files in `public/` are unmodified kit assets:
 
-| File | Use |
-|---|---|
-| `lunareos-logo-horizontal-reversed.svg` | Header and footer lockup |
-| `lunareos-symbol-silver.svg` | Hero mark; header below 700px |
-| `favicon.svg` | Browser icon (kit's `lunareos-favicon.svg`) |
+| File | Kit source | Use |
+|---|---|---|
+| `lunareos-logo-horizontal-silver.svg` | `01-Primary/` | Header and footer lockup |
+| `lunareos-symbol-silver.svg` | `02-Symbol/` | Hero mark; header below 560px |
+| `favicon.svg` | `04-App-Icons/lunareos-favicon.svg` | Browser icon |
+| `favicon.ico` | `04-App-Icons/` | Legacy browser icon |
+| `apple-touch-icon.png` | `07-PNG/app-icon-midnight-180.png` | iOS home screen |
 
-### ⚠️ Known defect in the brand kit
+Naming convention: **silver** = gradient, for dark backgrounds. **dark** = solid
+Midnight, for light backgrounds. **white** = solid white. Since every surface
+here is midnight, the site uses the silver set throughout.
 
-The kit designates `01-Primary/lunareos-logo-horizontal-dark.svg` as the
-light-background primary, but its crescent is filled with the silver gradient
-(`#FFFFFF → #A8B0C2`). Against any light ground the symbol is effectively
-invisible — only the wordmark reads.
+### Palette caution
 
-The dark theme sidesteps this today, since every surface here is midnight. It
-will bite the moment anything needs a light background — a PDF, an invoice, a
-one-colour print, a partner's site. **The fix belongs in the kit:** a
-light-background primary with the symbol in Midnight or a dark gradient.
+`--slate` (`#334155`) is **1.71:1 on Deep Indigo** — a border colour, not a text
+colour. It is never used for type here. The kit's two optional additions cover
+what the seven-colour palette lacks:
+
+- `--ash` (`#94A3B8`) — body text on dark, 6.9:1 on Deep Indigo
+- `--accent-text` (`#8DA2FF`) — links inside body copy
+
+### One derived token
+
+`--accent-fill` (`#4763F5`) is the only colour here that isn't from the kit. The
+kit notes Accent clears AA on Midnight, but that measures the accent *as text*.
+White text **on** `#4F6DFF` is 4.2:1, so a solid accent button at body size
+fails; this is the accent a step deeper (4.8:1 with white). Hover goes deeper
+still and takes its brightness from the glow rather than a lighter fill.
+
+`--accent` itself is unchanged and still used for glows, borders, rules, and
+markers, where the text threshold doesn't apply.
 
 ### Sizing
 
-The lockup files carry ~18% empty canvas on the right — artwork spans only 73%
-of the 1600-unit viewBox — so the CSS box must be larger than the artwork you
-want. The kit's minimums are 140px of artwork for the horizontal lockup and 24px
-for the symbol; `--logo-lockup-w` and `--logo-symbol-w` respect both, and the
-header falls back to the symbol below 700px rather than shrinking the lockup
-past its minimum.
+v4 trims every canvas to the artwork plus even padding, so `--logo-lockup-w` is
+a true rendered width. The kit's minimums are 140px for the horizontal lockup
+and 24px for the symbol; below the lockup's floor the header switches to the
+symbol rather than shrinking past it.
 
-The header is deliberately **opaque**, not translucent: the reversed lockup
-ships with a baked-in `#0A0D16` background rectangle, which would show as a
-solid plate against a blurred header once content scrolled beneath it. For the
-same reason `--ground` must stay exactly Midnight.
+### Type
 
-### Accessibility
+The wordmark is a custom monoline drawing, not a typeface — **only nine glyphs
+exist** (`L U N A R E O S M`). It has no font dependency and its wide spacing
+must not be condensed.
 
-All text meets WCAG AA. Two derived tokens exist because the brand accent
-doesn't clear it on its own:
-
-- `--accent-text` (`#7E93FF`) — the accent is 4.2:1 on `--surface`, short of AA
-  for body-size text, so words in accent colour use this instead.
-- `--accent-fill` (`#4763F5`) — white on `#4F6DFF` is 4.2:1, so a solid accent
-  button would fail; this is the accent a step deeper. Hover goes deeper still
-  and takes its brightness from the glow rather than a lighter fill.
-
-`--accent` itself is unchanged and still used for glows, borders, rules, and
-markers, where the AA text threshold doesn't apply.
+> **Open decision:** the kit recommends pairing it with **Poppins** or **Jost**.
+> The site currently sets Inter Tight, a neo-grotesque, against a geometric
+> monoline wordmark. See the note at the bottom of this file.
 
 ### Link preview
 
@@ -123,3 +125,7 @@ blank previews.
   any product ships, and its `LAST_UPDATED` constant should be bumped on edit.
 - Body copy across the site is a first draft written to establish the
   positioning. Read it as a proposal, not as finished messaging.
+- **Typeface is unresolved.** Brand Kit v4 recommends Poppins or Jost for UI and
+  body copy. The site sets Inter Tight, chosen before that guidance existed.
+  Both recommendations are geometric sans faces, which match the wordmark's
+  monoline geometry more closely than a neo-grotesque does. Worth a look.

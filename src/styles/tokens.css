@@ -9,17 +9,22 @@
 
 :root {
   /* --- Brand palette -----------------------------------------------------
-     Verbatim from the Lunareos Brand Kit v2
+     Verbatim from the Lunareos Brand Kit v4
      (06-Brand-Guidelines/lunareos-brand-tokens.json). Do not edit these to
      taste — if the brand changes, change it here and let the semantic
      tokens below inherit. */
-  --midnight: #0a0d16;
-  --deep-indigo: #111827;
-  --steel-blue: #1e293b;
-  --slate: #334155;
-  --moonstone: #cbd5e1;
-  --white: #ffffff;
-  --accent: #4f6dff;
+  --midnight: #0a0d16; /*      primary background                           */
+  --deep-indigo: #111827; /*   surfaces, cards                              */
+  --steel-blue: #1e293b; /*    raised surfaces                              */
+  --slate: #334155; /*         BORDERS ONLY — 1.71:1 on deep indigo         */
+  --moonstone: #cbd5e1; /*     flat logo, secondary text                    */
+  --white: #ffffff; /*         headings, primary text                       */
+  --accent: #4f6dff; /*        UI only — buttons, links, focus              */
+
+  /* The kit's two optional additions, present because the seven-colour
+     palette has no accessible text grey. */
+  --ash: #94a3b8; /*           body text on dark — 6.9:1 on deep indigo     */
+  --accent-text: #8da2ff; /*   links inside body copy — 8.1:1 on midnight   */
 
   /* --- Surfaces ---------------------------------------------------------- */
   --ground: var(--midnight); /*     the page                                */
@@ -32,29 +37,28 @@
   /* --- Text --------------------------------------------------------------
      Contrast ratios are against --ground; all clear WCAG AA (4.5:1), and
      each also clears it on --surface. */
-  --text: #f1f4f8; /*        18.6:1 — headlines                             */
-  --text-body: #cbd5e1; /*   13.1:1 — moonstone, body copy                  */
-  --text-muted: #a8b4c6; /*   9.3:1 — secondary copy                        */
-  --text-faint: #7e8899; /*   5.4:1 — mono labels, metadata                 */
+  --text: var(--white); /*    19.4:1 — headlines                            */
+  --text-body: var(--moonstone); /* 13.1:1 — body copy                      */
+  --text-muted: var(--ash); /*  7.6:1 — secondary copy                      */
 
-  /* Brand accent is 4.6:1 on midnight but only 4.2:1 on --surface, so it
-     falls short of AA for text sitting on a card. --accent-text is the
-     lightened variant used wherever the accent carries actual words;
-     --accent itself stays for glows, borders, rules, and markers. */
-  --accent-text: #7e93ff; /*  6.9:1 on ground, 6.3:1 on surface             */
+  /* Mono labels want to sit a step below body copy. Rather than introduce a
+     new hue, this is ash mixed back toward the ground. */
+  --text-faint: color-mix(in srgb, var(--ash) 82%, var(--midnight)); /* 5.3:1 */
+
   --accent-dim: rgba(79, 109, 255, 0.16);
 
-  /* White on the brand accent is only 4.2:1 — a solid accent button set at
-     body size would fail AA. These are the accent taken a step deeper so
-     white text clears it; hover goes deeper still and gets its brightness
-     from the glow rather than from a lighter fill. */
+  /* The kit notes accent-on-midnight clears AA for buttons, but that measures
+     the accent as *text*. White text ON the accent is 4.2:1, so a solid
+     accent button at body size fails. These are the accent taken a step
+     deeper so white clears it; hover goes deeper still and takes its
+     brightness from the glow rather than from a lighter fill. */
   --accent-fill: #4763f5; /*  4.8:1 with white                              */
   --accent-fill-hover: #3d59f0; /* 5.4:1 with white                         */
 
-  /* The glow. Every SVG in the brand kit declares this gradient and none of
-     them use it; here it becomes the site's one atmospheric device. It is
-     always a background layer — never composited onto the logo artwork,
-     which the kit's usage rules forbid. */
+  /* The glow — the site's one atmospheric device. (v2 declared this gradient
+     in every SVG and never referenced it; v4 removed it as dead code, so it
+     is now the site's own, not a kit asset.) It is always a background layer,
+     never composited onto the logo artwork, which the kit's rules forbid. */
   --glow: radial-gradient(circle, rgba(79, 109, 255, 0.36) 0%, transparent 70%);
   --glow-soft: radial-gradient(circle, rgba(79, 109, 255, 0.14) 0%, transparent 68%);
 
@@ -95,13 +99,13 @@
   --header-h: 4.5rem;
 
   /* --- Logo sizing -------------------------------------------------------
-     The lockup carries ~18% empty canvas on the right (artwork spans 73% of
-     the 1600-unit viewBox), so the CSS box must exceed the artwork width you
-     want. The kit's minimums are 140px of artwork for the horizontal lockup
-     and 24px for the symbol; below the lockup's floor the header falls back
-     to the symbol rather than shrinking past it. */
-  --logo-lockup-w: clamp(196px, 15vw, 224px); /* ≥143px of artwork          */
-  --logo-symbol-w: 34px;
+     v4 trims every canvas to the artwork plus even padding, so these are now
+     true rendered widths — v2's ~18% of trailing empty space is gone and no
+     compensation is needed. The kit's minimums are 140px for the horizontal
+     lockup and 24px for the symbol; below the lockup's floor the header falls
+     back to the symbol rather than shrinking past it. */
+  --logo-lockup-w: clamp(152px, 13vw, 188px);
+  --logo-symbol-w: 32px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }

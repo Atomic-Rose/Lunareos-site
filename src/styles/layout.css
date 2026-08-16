@@ -58,16 +58,17 @@
 }
 
 /* --- Header ---------------------------------------------------------------
-   Deliberately opaque: the reversed lockup ships with a baked-in midnight
-   background rectangle, which would show as a solid plate against a
-   translucent, blurred header once content scrolled beneath it. */
+   v4's silver lockup is transparent, so the header can blur what scrolls
+   beneath it. (v2's reversed lockup had a midnight rectangle baked in, which
+   forced an opaque header — that constraint is gone.) */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
   height: var(--header-h);
-  background: var(--ground);
+  background: color-mix(in srgb, var(--ground) 82%, transparent);
+  backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--border);
 }
 
@@ -221,9 +222,9 @@
   }
 }
 
-/* Below this width the lockup would render under the kit's 140px artwork
-   minimum, so the header switches to the symbol. */
-@media (max-width: 700px) {
+/* Below this width the lockup would render under the kit's 140px minimum, so
+   the header switches to the symbol. */
+@media (max-width: 560px) {
   .site-header__lockup {
     display: none;
   }

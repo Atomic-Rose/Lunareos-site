@@ -65,12 +65,18 @@
 /* The statement is meant to hold two lines, so the measure sets where it turns
    rather than leaving it to whatever the column happens to be. Capped in `ch`
    so the break holds as the size scales; the old rule against a `ch` cap only
-   applied while the headline was fighting to stay on one line. */
+   applied while the headline was fighting to stay on one line.
+
+   18ch, measured rather than picked: at 15ch the line count went 2 → 3 → 2
+   across 1024 / 900 / 834, and at 16ch it broke to three lines at 1728. 17ch
+   and 18ch both hold two lines from 640 to 1728, and 18ch keeps the break
+   after "for", which puts the whole of "whatever comes next." on one line.
+   Below 640 it runs to three, which is right for a phone. */
 .hero__title {
   font-size: var(--size-display);
   letter-spacing: var(--track-display);
   line-height: var(--leading-display);
-  max-width: 15ch;
+  max-width: 18ch;
 }
 
 /* Closer to the headline than a paragraph would be — it is the second half of
@@ -339,13 +345,18 @@
 }
 
 /* The negative inline margin stays inside the shell gutter at every width, so
-   the hover field can breathe past the text without causing overflow. */
+   the hover field can breathe past the text without causing overflow.
+
+   The name column is a tab stop, not a half of the row: at 0.5fr it was ~275px
+   wide holding a word ~60px long, which read as a hole between the name and
+   its description rather than as an aligned column. */
 .index__row {
+  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.5fr) auto;
+  grid-template-columns: minmax(7.5rem, 0.2fr) minmax(0, 1fr) auto;
   align-items: center;
   gap: clamp(1rem, 3vw, 2.5rem);
-  padding: clamp(1.5rem, 3vw, 2.25rem) 0.75rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem) 0.75rem;
   margin-inline: -0.75rem;
   border-radius: var(--radius);
   transition: background 0.2s var(--ease);
@@ -353,6 +364,25 @@
 
 a.index__row:hover {
   background: color-mix(in srgb, var(--surface) 65%, transparent);
+}
+
+/* A tick that grows from the row's left edge, so the hover has a direction
+   rather than only a state. Linked rows only — a row with nowhere to go must
+   not suggest it does, which is the same rule that withholds its arrow. */
+a.index__row::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  translate: 0 -50%;
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.25s var(--ease);
+}
+
+a.index__row:hover::before {
+  height: 52%;
 }
 
 .index__name {
@@ -374,9 +404,17 @@ a.index__row:hover {
 }
 
 /* Every kind reads the same weight on purpose: these are labels on the work,
-   not a taxonomy the studio is sorted into. */
-.index__kind {
+   not a taxonomy the studio is sorted into. Platforms sit beside them at the
+   same weight for the same reason — one metadata line, not a hierarchy. */
+.index__kind,
+.index__platforms {
   transition: color 0.2s var(--ease);
+}
+
+/* Renders only for projects that declare platforms; the two current entries
+   don't, and inventing them would be exactly the filler this page refuses. */
+.index__platforms {
+  white-space: nowrap;
 }
 
 .index__meta .arrow {
@@ -385,6 +423,7 @@ a.index__row:hover {
 }
 
 a.index__row:hover .index__kind,
+a.index__row:hover .index__platforms,
 a.index__row:hover .index__meta .arrow {
   color: var(--accent-text);
 }
@@ -554,24 +593,75 @@ a.index__row:hover .index__meta .arrow {
   }
 }
 
-/* The wide capture stops being an interface below roughly this width — at
-   834px it renders about 757px across and a three-panel desktop app at 58% of
-   its design scale is texture. Everything under it gets a portrait detail
-   instead, capped at the crop's own 406px so it is never upscaled, and
-   centred so the plate reads as deliberate rather than as a wide image that
-   failed to fill its row.
+/* --- The window crop -----------------------------------------------------
+   Only while there is no middle capture (see the --crop modifier). The frame
+   shows the wide asset at whatever scale makes its manuscript and Changes
+   panels fill the frame, with the binder running off the left edge — a real
+   two-panel view of the real render, clipped by a frame rather than resampled,
+   stretched, or re-cropped as a file.
 
-   Left-aligned, not centred: the name, summary, platforms, and link above it
-   all start at the shell's left edge, and a centred plate under left-aligned
-   copy reads as a card that floated in. Sharing the axis turns the space to
-   its right into a margin instead of into a gap.
+   The cut line is design x=284, measured off the master rather than guessed:
+   the title bar's view switcher begins there, and cutting any further right
+   would slice the switcher itself. It is 14px short of clearing the end of
+   "3,195 words" in the chapter header — the two rows genuinely overlap, so no
+   cut line exists that takes every element whole, and this is the one that
+   leaves the smallest fragment.
 
-   This is also where the middle art direction lands once it is rendered; see
-   FEATURED.imageMid. */
-@media (max-width: 1150px) {
+   Geometry: the capture is a 1600px-wide render, so the frame shows 1316 of
+   1600 — the image is drawn at 1600/1316 = 121.6% of the frame width and
+   pinned right, and the frame's own height is that image's height,
+   121.6% × (1625/2600) = 76% of the frame width. Hence 1316:1000.
+
+   Band: dropping the binder buys back 21% of scale, which is worth more than
+   the binder is. Below 1000px even the cropped view falls under 11px of the
+   app's own type, so the portrait detail takes over; above 1320px the
+   uncropped capture finally clears that bar on its own and the whole
+   application comes back, binder included. */
+@media (min-width: 1000px) and (max-width: 1320px) {
+  .feature__visual--crop .feature__shot {
+    aspect-ratio: 1316 / 1000;
+  }
+
+  .feature__visual--crop picture {
+    position: absolute;
+    inset: 0 0 auto auto;
+    width: 121.6%;
+  }
+
+  .feature__visual--crop img {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* The 14px the cut line cannot clear — the tail of "3,195 words" — dissolved
+     rather than sliced. Short enough (40px) that it reads as the window
+     continuing past its frame and not as a vignette applied to the product. */
+  .feature__visual--crop .feature__shot::after {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40px;
+    background: linear-gradient(to right, var(--ground), transparent);
+    pointer-events: none;
+  }
+}
+
+/* Below the crop band the source is the portrait detail. Capped a little over
+   its own 406px rendered width so it is never meaningfully upscaled, and
+   left-aligned: the name, summary, platforms, and link above it all start at
+   the shell's left edge, and a centred plate under left-aligned copy reads as
+   a card that floated in. */
+@media (max-width: 999px) {
+  .feature__visual--crop {
+    max-width: 28rem;
+    margin-inline: 0;
+  }
+}
+
+/* The same cap, for the configuration that has a middle capture and therefore
+   only falls back to the portrait below 640px. */
+@media (max-width: 640px) {
   .feature__visual {
-    /* The crop's own rendered width is 406px, so this is the largest it goes
-       before it is being upscaled rather than displayed. */
     max-width: 28rem;
     margin-inline: 0;
   }
@@ -598,6 +688,17 @@ a.index__row:hover .index__meta .arrow {
   .index__desc {
     grid-column: 1 / -1;
     grid-row: 2;
+  }
+
+  /* A platform list and a kind label cannot share one line at this width, so
+     the metadata group wraps instead of forcing the row wide. */
+  .index__meta {
+    flex-wrap: wrap;
+    row-gap: 0.35rem;
+  }
+
+  .index__platforms {
+    white-space: normal;
   }
 }
 
@@ -641,10 +742,6 @@ a.index__row:hover .index__meta .arrow {
     margin-right: 0;
     margin-bottom: 2.25rem;
     opacity: 1;
-  }
-
-  .hero__title {
-    max-width: 18ch;
   }
 
   .hero__glow {

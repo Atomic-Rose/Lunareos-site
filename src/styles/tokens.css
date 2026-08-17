@@ -87,7 +87,7 @@
   --size-display: clamp(2.625rem, 6.2vw, 5.25rem); /* hero statement, only   */
   --size-h1: clamp(2rem, 3.6vw, 3.25rem); /*         product wordmark        */
   --size-h2: clamp(1.75rem, 2.6vw, 2.375rem); /*     contact, page heroes    */
-  --size-h3: clamp(1.125rem, 1.5vw, 1.375rem); /*    project names, legal    */
+  --size-h3: clamp(1.1875rem, 1.7vw, 1.5rem); /*     project names, legal    */
   --size-lede: clamp(1.0625rem, 1.45vw, 1.3125rem);
   --size-body: 1rem;
   --size-small: 0.875rem;

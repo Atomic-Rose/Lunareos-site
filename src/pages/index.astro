@@ -71,32 +71,27 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
         </a>
       </div>
 
-      {/* The middle source only renders once it is a real capture; until then
-          the narrow detail covers everything below the wide crop's legible
-          width. See FEATURED.imageMid. */}
-      <figure class="feature__visual">
+      {/* Three bands. Without a real middle capture the wide asset covers
+          861–1150px and the frame crops the binder off it in CSS — hence the
+          --crop modifier, which exists only while imageMid is missing. Drop
+          the capture in and the modifier, the CSS crop, and the wider portrait
+          band all switch off together. See the README. */}
+      <figure class:list={['feature__visual', !FEATURED.imageMid && 'feature__visual--crop']}>
         <a class="feature__shot" href={FEATURED.href} tabindex="-1">
           <picture>
             <source
-              media="(max-width: 640px)"
+              media={FEATURED.imageMid ? '(max-width: 640px)' : '(max-width: 999px)'}
               srcset={withBase(FEATURED.imageNarrow)}
               width={FEATURED.imageNarrowW}
               height={FEATURED.imageNarrowH}
             />
             {
-              FEATURED.imageMid ? (
+              FEATURED.imageMid && (
                 <source
                   media="(max-width: 1150px)"
                   srcset={withBase(FEATURED.imageMid)}
                   width={FEATURED.imageMidW}
                   height={FEATURED.imageMidH}
-                />
-              ) : (
-                <source
-                  media="(max-width: 1150px)"
-                  srcset={withBase(FEATURED.imageNarrow)}
-                  width={FEATURED.imageNarrowW}
-                  height={FEATURED.imageNarrowH}
                 />
               )
             }
@@ -137,6 +132,9 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
                   <h3 class="index__name">{project.name}</h3>
                   <p class="index__desc">{project.summary}</p>
                   <span class="index__meta">
+                    {project.platforms && (
+                      <span class="label index__platforms">{project.platforms.join(' · ')}</span>
+                    )}
                     <span class="label index__kind">{project.kind}</span>
                     <span class="arrow" aria-hidden="true">→</span>
                   </span>
@@ -146,6 +144,9 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
                   <h3 class="index__name">{project.name}</h3>
                   <p class="index__desc">{project.summary}</p>
                   <span class="index__meta">
+                    {project.platforms && (
+                      <span class="label index__platforms">{project.platforms.join(' · ')}</span>
+                    )}
                     <span class="label index__kind">{project.kind}</span>
                   </span>
                 </div>

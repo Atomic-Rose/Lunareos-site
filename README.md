@@ -52,11 +52,14 @@ project copy.
   `summary`, `kind`, and optionally `href`.
 
 `platforms` is a plain array of names (`['macOS', 'Windows', …]`); the template
-owns the separator, so don't put `·` in the data. It renders under the summary
-in the same mono voice as the status label — publisher metadata, not badges.
-`StudioProject` accepts the same field, but **the index does not render it
-yet**: the studio section is deliberately unchanged until the new hierarchy has
-been judged on its own.
+owns the separator, so don't put `·` in the data. On `FEATURED` it renders under
+the summary; on a `StudioProject` it renders in the row's metadata group, beside
+the kind label and at the same weight — one metadata line, not a hierarchy.
+
+The field is optional in both places and **the row simply omits it when it is
+absent**, which is why neither current project shows one: their platforms aren't
+decided, and inventing them is exactly the filler this page refuses. Add the
+array when the answer is real.
 
 `kind` is a single mono word (`Experiment`, `Utility`, `Available`,
 `In development`). Every kind renders at the same weight and colour on purpose:
@@ -108,17 +111,50 @@ desktop app at every width:
 
 | Band | Source | Why |
 |---|---|---|
-| `min-width: 1151px` | `muse-preview.webp` | The whole application, rendered ≥1010px wide — the point at which its own type is still readable. |
-| `641px–1150px` | `muse-preview-mid.webp` *(not yet rendered)* | Manuscript + Changes, binder dropped. At 834px the wide capture renders ~757px, which is 58% of its design scale — texture, not an interface. |
+| `min-width: 1321px` | `muse-preview.webp` | The whole application, at ≥75% of its design scale — the point at which its own type stays readable. |
+| `641px–1320px` | `muse-preview-mid.webp` *(not yet rendered)* | Manuscript + Changes, binder dropped. |
 | `max-width: 640px` | `muse-preview-narrow.webp` | A detail shot of the Changes panel. A phone cannot hold the whole window at a legible size. |
 
-**The middle capture does not exist yet.** Until it does, `FEATURED.imageMid`
-is `undefined` and the template falls back to the narrow detail across that
-whole band — legible, and honest about being a detail, which a shrunken
-overview is not. Do **not** produce it by cropping `muse-preview.webp`: the
-title bar, the chapter header, and the manuscript panel all have content at
-different x offsets, so every vertical cut line slices either `3,195 words`,
-the view switcher, or the manuscript text itself. It has to be a real capture.
+**The middle capture does not exist yet**, so `FEATURED.imageMid` is
+`undefined` and the page runs a different arrangement in the meantime — see
+[The window crop](#the-window-crop). Do **not** produce the middle capture by
+cropping `muse-preview.webp` as a file: the title bar, the chapter header, and
+the manuscript panel all have content at different x offsets, so every vertical
+cut line slices either `3,195 words`, the view switcher, or the manuscript text
+itself. It has to be a real render.
+
+### The window crop
+
+While `imageMid` is missing, `index.astro` adds `.feature__visual--crop` and
+the arrangement becomes:
+
+| Band | What happens |
+|---|---|
+| `min-width: 1321px` | The wide capture, uncropped. |
+| `1000px–1320px` | The wide capture at 121.6% of the frame, pinned right, with the frame clipping the binder off the left edge. |
+| `max-width: 999px` | The portrait detail, capped at 28rem, left-aligned. |
+
+This is a **frame clipping a real render**, not a re-crop of the file — the
+asset is untouched and the CSS is deleted in one block when the real capture
+lands.
+
+The cut line is design `x=284`, measured off the master: the title bar's view
+switcher starts there, and anything further right slices the switcher. It falls
+14px short of clearing `3,195 words` in the chapter header — the two rows
+genuinely overlap, so **no cut line takes every element whole** — and a 40px
+gradient at the frame's left edge dissolves the remainder rather than leaving
+it sliced.
+
+The geometry follows from the capture being a 1600px-wide render: the frame
+shows `1600 − 284 = 1316` of it, so the image is drawn at `1600/1316` = 121.6%
+of the frame and the frame's height is `121.6% × (1625/2600)` = 76% of its
+width, hence `aspect-ratio: 1316 / 1000`. Re-measure all three numbers if the
+mockup's chrome ever changes.
+
+Dropping the binder buys back 21% of scale. The band edges are where that stops
+being enough (1000px, below which even the cropped view falls under ~11px of
+the app's own type) and where the uncropped capture clears the same bar on its
+own (1320px).
 
 Render it the same way the wide one is, at 8:5 and 2×, with the binder
 collapsed — the mockup's own control, not a CSS override:
@@ -161,10 +197,9 @@ next card's header reads as a list that scrolls.
 Two things follow from having more than one source. `alt` lives on the `<img>`
 and cannot vary per source, so it describes the idea on screen rather than the
 pixels of any one crop. And the crop is portrait, so `.feature__visual` takes a
-`max-width` of `28rem` below 1150px — a little over the crop's own 406px
-rendered width, so it is never meaningfully upscaled — and sits **left-aligned**
-with the copy above it. Centred under left-aligned copy it read as a card that
-had floated in.
+`max-width` of `28rem` — a little over the crop's own 406px rendered width, so
+it is never meaningfully upscaled — and sits **left-aligned** with the copy
+above it. Centred under left-aligned copy it read as a card that had floated in.
 
 **WebP with no fallback** is deliberate. It is not the site's oldest
 requirement — `color-mix()` in `tokens.css` needs Safari 16.2 (2022) and WebP

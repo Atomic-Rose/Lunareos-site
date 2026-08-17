@@ -131,6 +131,17 @@ a {
   transform: translate(2px, -2px);
 }
 
+/* --- Motion primitives ----------------------------------------------------
+   One entrance, shared. Elements set their own delay; nothing sets an end
+   state, so each animates to whatever opacity it actually rests at. */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
 /* --- Accessibility -------------------------------------------------------- */
 
 .skip-link {

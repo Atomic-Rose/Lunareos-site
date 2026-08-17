@@ -1,0 +1,23 @@
+---
+import { SITE, withBase } from '../site'
+
+/*
+ * The home page holds one screen and does not scroll, so it cannot carry the
+ * full footer — but everything the footer is legally there for still has to be
+ * reachable. This is that, in one row: who owns it, and the policy.
+ *
+ * The interaction hint used to live here too. It sits at the foot of the copy
+ * instead, where a reader meets it before reaching the thing it describes.
+ */
+
+const year = new Date().getFullYear()
+---
+
+<footer class="footer-mini">
+  <div class="footer-mini__inner">
+    <p class="label">© {year} {SITE.legalName}</p>
+    <p class="label footer-mini__legal">
+      <a href={withBase('/privacy/')}>Privacy</a>
+    </p>
+  </div>
+</footer>

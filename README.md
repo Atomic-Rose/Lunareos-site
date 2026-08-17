@@ -3,7 +3,9 @@
 Marketing website for Lunareos LLC. Static HTML built with [Astro](https://astro.build),
 deployed to GitHub Pages at [lunareos.com](https://lunareos.com).
 
-The site ships **zero JavaScript** — every page is fully rendered HTML and CSS.
+The site ships one small script, for the system view on the home page, and
+nothing else. Every page renders fully as HTML and CSS first; see
+[The system](#the-system).
 
 ## Development
 
@@ -22,24 +24,81 @@ npm run preview  # serve the built output
 src/
   site.ts               Shared constants — nav, email, company name
   layouts/Base.astro    <head>, header, footer, global CSS imports
-  components/           Header, Footer
-  pages/                index.astro (single page) + privacy.astro
+  components/           Header, Footer, FooterMini, SystemView
+  pages/                index.astro (the system) + studio.astro + privacy.astro
   styles/
     tokens.css          Colour, type, and spacing variables — edit here first
     base.css            Reset, document defaults, type primitives, .button
     layout.css          Shell, header/footer, section scaffolding
-    components.css      Hero, feature, studio index, editorial, contact, legal
+    components.css      Feature, studio index, editorial, contact, legal
+    system.css          The opening system view
 public/                 Copied verbatim to the site root (logos, favicon, CNAME)
 ```
 
-The home page is **four sections**: hero, the featured project (`#currently`),
-the studio index (`#studio`), then contact. `/privacy/` is the only separate
-route, and the only page still using the `.editorial` two-column layout.
+Three routes:
 
-The header carries **no navigation** — the page is short enough to scroll and
-the only external destination belongs to a product, not to Lunareos, so the
-header holds the logo and a single Email button. If a real second *page* ever
-appears, the nav comes back with it.
+| Route | What it is |
+|---|---|
+| `/` | **The system**, and nothing else — one screen that fills the viewport and does not scroll. Every project is reachable from orbit. |
+| `/studio/` | The work: the featured project (`#currently`), the studio index (`#studio`), then contact. |
+| `/privacy/` | The policy. The only page still using the `.editorial` two-column layout. |
+
+The home page holds one screen, so it takes `FooterMini` — a single row with
+the interaction hint, the copyright, and the privacy link — instead of the full
+footer. `Base.astro` switches on `chrome="system"`.
+
+`/studio/` is the old home page below its hero, moved rather than rewritten:
+the copy, the sections, and their order are unchanged.
+
+### The system
+
+**The home page is this and nothing else.** Lunareos is the body at the centre;
+everything the studio builds orbits it, and selecting an object opens its
+panel. There is no scroll and no content below — the work has its own page.
+
+It carries the page's `h1`, which is still the approved statement.
+
+Bodies are **derived** from `FEATURED` and `STUDIO_PROJECTS`, not listed again:
+add a project in `site.ts` and it appears both in orbit and in the index below.
+`SYSTEM_BODIES` pairs each one with a ring, an angle, and a dot size; the first
+two studio projects are hand-placed so no two labels collide, and anything
+beyond them falls to the outer ring automatically.
+
+Positions are computed in the component, not eyeballed in CSS. The orbital
+plane is tilted `SYSTEM_TILT` degrees, which foreshortens the vertical axis by
+`cos(tilt)` and nothing else, so a body at angle θ on a ring of radius r lands
+at `(r·cos θ, r·sin θ·cos tilt)` — which is why every dot sits exactly on its
+ring rather than near it.
+
+**Nothing in it is invented.** Every value a visitor reads — name, status,
+kind, summary, platforms — comes from the project's own entry. A body with no
+`href` gets no link, the same rule the studio index follows. Resist adding
+system-flavoured furniture (signal readouts, sector coordinates, an archive of
+work that doesn't exist): it is the same filler as a fake metric, wearing a
+different costume.
+
+Two things about the centre. It is **not the logo** — it is a body lit from the
+upper right, and the crescent along its limb is produced by the lighting, which
+is the shape the identity is drawn from arrived at honestly. And the light is
+written as `radial-gradient(ellipse 45% 45% …)`, not `circle 45%`: a percentage
+radius is invalid on `circle` and silently drops the whole layer, which renders
+as an evenly lit globe with no terminator at all.
+
+**This section is the only JavaScript on the site**, and it is enhancement
+only. The bodies are ordinary fragment links and the panels open on `:target`,
+so without JavaScript every object is still reachable and readable. The script
+adds pointer drift, closes on Escape, moves focus to the opened panel, and
+keeps the URL clean. The star field is rendered at build time from a seeded
+generator — never by script, so it is there before anything loads and identical
+on every build.
+
+The header carries **one nav link**, because there is now a real second page to
+reach: the home page is the system, and the work lives at `/studio/`. It is set
+as a mono label like every other piece of structure on the site.
+
+`NAV_LINKS` carries **pages only** — never anchors to sections of the page you
+are already looking at. That was the rule that kept the nav off the site when
+there was only one page, and it is the same rule that brought it back.
 
 ### Adding a project
 

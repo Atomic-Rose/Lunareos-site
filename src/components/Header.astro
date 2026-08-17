@@ -1,5 +1,8 @@
 ---
-import { SITE, withBase } from '../site'
+import { SITE, NAV_LINKS, withBase } from '../site'
+
+/* Trailing slash normalised so /studio and /studio/ both mark themselves. */
+const here = Astro.url.pathname.replace(/\/$/, '') || '/'
 ---
 
 <header class="site-header">
@@ -27,9 +30,30 @@ import { SITE, withBase } from '../site'
     </a>
 
     {/*
-      One action, not a nav. With a two-section page there is nothing to
-      navigate to, so the header offers the only thing worth doing.
+      The nav is back because there is somewhere to go: the home page is the
+      system, and the work is its own page. It carries real pages only — never
+      anchors to sections of the page you are already looking at.
     */}
-    <a class="button" href={`mailto:${SITE.email}`}>Email</a>
+    <div class="site-header__actions">
+      <nav aria-label="Primary">
+        <ul class="site-header__nav">
+          {
+            NAV_LINKS.map((link) => (
+              <li>
+                <a
+                  class="site-header__link"
+                  href={link.href}
+                  aria-current={here === link.href.replace(/\/$/, '') ? 'page' : undefined}
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <a class="button" href={`mailto:${SITE.email}`}>Email</a>
+    </div>
   </div>
 </header>

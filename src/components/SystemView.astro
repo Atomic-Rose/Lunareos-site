@@ -1,0 +1,270 @@
+---
+import { SITE, SYSTEM_BODIES, SYSTEM_TILT } from '../site'
+
+/*
+ * The opening view: Lunareos at the centre, everything it builds in orbit.
+ *
+ * Positions are computed here rather than eyeballed in CSS, so every body sits
+ * exactly on its ring. The plane is tilted SYSTEM_TILT degrees away from the
+ * viewer, which foreshortens the vertical axis by cos(tilt) and nothing else —
+ * so a body at angle θ on a ring of radius r lands at
+ * (r·cos θ, r·sin θ·cos tilt), as a percentage of the map's width.
+ *
+ * Bodies are static. An orbit slow enough not to move a link out from under a
+ * cursor is an orbit nobody sees move, and one fast enough to see is one that
+ * moves the click target — so the motion here is the plane drifting with the
+ * pointer, not the bodies travelling.
+ */
+
+const rad = (deg: number) => (deg * Math.PI) / 180
+const flatten = Math.cos(rad(SYSTEM_TILT))
+
+/* Both axes are emitted in `cqw` — percentages of the map's *width* — because
+   the map is no longer square. A percentage `top` would resolve against its
+   height and squash every orbit as the map's proportions changed. */
+const place = (ring: number, angle: number) => ({
+  x: +(ring * Math.cos(rad(angle)) * 100).toFixed(2),
+  y: +(ring * Math.sin(rad(angle)) * flatten * 100).toFixed(2),
+})
+
+const bodies = SYSTEM_BODIES.map((body) => ({
+  ...body,
+  ...place(body.ring, body.angle),
+  /* Labels sit outside the orbit they belong to, so a body on the left half
+     carries its label to the left and nothing crosses the middle. */
+  side: Math.cos(rad(body.angle)) < 0 ? 'left' : 'right',
+}))
+
+/* One ring per orbit that is actually occupied, plus a wider one that isn't —
+   the studio has room. */
+const rings = [...new Set(bodies.map((b) => b.ring))].sort((a, b) => a - b)
+const allRings = [...rings, rings[rings.length - 1] + 0.06]
+
+/* Dust, on the same plane and placed the same way as the bodies. It carries no
+   meaning and is not interactive — it is there so the field reads as a place
+   with things in it rather than as four perfect ellipses. */
+const debris = [
+  { ring: 0.315, angle: 96 },
+  { ring: 0.425, angle: 236 },
+  { ring: 0.505, angle: 18 },
+  { ring: 0.2, angle: 143 },
+].map((d) => place(d.ring, d.angle))
+
+/* Seeded so the field is identical on every build: an unstable starfield turns
+   every deploy into a diff. */
+let seed = 20260817
+const random = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296
+
+const stars = Array.from({ length: 220 }, () => ({
+  x: +(random() * 100).toFixed(2),
+  y: +(random() * 100).toFixed(2),
+  opacity: +(random() * 0.5 + 0.08).toFixed(2),
+  bright: random() > 0.88,
+}))
+---
+
+<section class="system" id="system" aria-labelledby="system-title" data-system>
+  <div class="system__stars" aria-hidden="true">
+    {
+      stars.map((star) => (
+        <i
+          class:list={['system__star', star.bright && 'system__star--bright']}
+          style={`left:${star.x}%;top:${star.y}%;opacity:${star.opacity}`}
+        />
+      ))
+    }
+  </div>
+
+  <div class="shell system__inner">
+    <div class="system__copy">
+      <p class="label system__eyebrow">{SITE.tagline}</p>
+      <h1 class="system__title" id="system-title">Software for whatever comes next.</h1>
+      <p class="lede system__lede">{SITE.description}</p>
+
+      {/* Sits at the foot of the copy, which is where the eye is just before it
+          crosses to the map — and gives the left column a bottom edge to match
+          the caption under the map. */}
+      <p class="label system__hint">
+        <span class="system__hint-line" aria-hidden="true"></span>
+        Select an object to inspect
+      </p>
+    </div>
+
+    {/* The map, under the same head the rest of the site gives a section: a
+        mono label, a rule, and metadata on the right. The count is counted. */}
+    <div class="system__stage">
+      <div class="section__head system__head">
+        <p class="label">System</p>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="label">{bodies.length} objects</p>
+      </div>
+
+      {/* `--tilt` is read by the ring transforms; the body positions are
+          already resolved, so nothing here depends on it at runtime. */}
+      <div class="system__map" style={`--tilt:${SYSTEM_TILT}deg`} data-map>
+        <span class="glow system__glow" aria-hidden="true"></span>
+
+        <div class="system__plane" aria-hidden="true">
+          {allRings.map((r) => <span class="system__ring" style={`--d:${r * 200}%`} />)}
+        </div>
+
+        {
+          debris.map((d) => (
+            <span class="system__dust" style={`--x:${d.x}cqw;--y:${d.y}cqw`} aria-hidden="true" />
+          ))
+        }
+
+        {/* The centre is lit from the upper right, so its terminator reads as
+            the crescent the identity is drawn from. */}
+        <div class="system__core" aria-hidden="true">
+          <span class="system__core-ring"></span>
+          <span class="label system__core-name">{SITE.name}</span>
+        </div>
+
+        {
+          bodies.map((body) => (
+            <a
+              class:list={['system__body', `system__body--${body.side}`]}
+              style={`--x:${body.x}cqw;--y:${body.y}cqw;--size:${body.size}px`}
+              href={`#object-${body.key}`}
+              id={`body-${body.key}`}
+              aria-controls={`object-${body.key}`}
+              aria-expanded="false"
+              data-body={body.key}
+            >
+              <span class="system__dot" aria-hidden="true" />
+              <span class="system__label">
+                {body.name}
+                <span class="system__label-kind">{body.kind}</span>
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      {/* The one caption the diagram owes the reader: the orbits carry no
+          distances, and saying so is what keeps them from implying any. */}
+      <p class="label system__caption">Orbits not to scale</p>
+    </div>
+  </div>
+
+  {/* One panel per body, rendered here rather than built by script: with no
+      JavaScript the links are ordinary fragment links and `:target` opens the
+      panel, so the content is reachable either way. */}
+  <div class="system__panels">
+    {
+      bodies.map((body) => (
+        <article
+          class="object"
+          id={`object-${body.key}`}
+          aria-labelledby={`object-${body.key}-name`}
+          data-panel={body.key}
+          tabindex="-1"
+        >
+          <div class="object__head">
+            <p class="label">{body.kind}</p>
+            <a class="object__close" href="#system" data-close aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </a>
+          </div>
+
+          <div class="object__body">
+            <h2 class="object__name" id={`object-${body.key}-name`}>
+              {body.name}
+            </h2>
+            <p class="object__summary">{body.summary}</p>
+
+            {body.platforms && (
+              <p class="label object__platforms">{body.platforms.join(' · ')}</p>
+            )}
+
+            {/* No destination, no link — the same rule the studio index keeps. */}
+            {body.href && (
+              <a class="object__link" href={body.href}>
+                {body.link ?? 'Visit site'} <span class="arrow" aria-hidden="true">↗</span>
+              </a>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+</section>
+
+<script>
+  /* Progressive enhancement only. Without this the fragment links still work
+     and `:target` still opens a panel; this adds pointer drift, closes on Esc,
+     and keeps the URL clean. */
+  const system = document.querySelector<HTMLElement>('[data-system]')
+
+  if (system) {
+    const map = system.querySelector<HTMLElement>('[data-map]')
+    const bodies = [...system.querySelectorAll<HTMLAnchorElement>('[data-body]')]
+    const panels = [...system.querySelectorAll<HTMLElement>('[data-panel]')]
+    const still = matchMedia('(prefers-reduced-motion: reduce)')
+
+    const close = (focusBody?: HTMLElement) => {
+      system.classList.remove('is-open')
+      panels.forEach((panel) => panel.classList.remove('is-open'))
+      bodies.forEach((body) => body.setAttribute('aria-expanded', 'false'))
+      focusBody?.focus()
+    }
+
+    const open = (key: string) => {
+      const panel = panels.find((p) => p.dataset.panel === key)
+      if (!panel) return
+      panels.forEach((p) => p.classList.toggle('is-open', p === panel))
+      bodies.forEach((b) => b.setAttribute('aria-expanded', String(b.dataset.body === key)))
+      system.classList.add('is-open')
+      /* The panel takes focus so the next Tab continues inside it, and a
+         screen reader lands on the name rather than back at the top. */
+      panel.focus({ preventScroll: true })
+    }
+
+    bodies.forEach((body) => {
+      body.addEventListener('click', (event) => {
+        event.preventDefault()
+        open(body.dataset.body!)
+      })
+    })
+
+    system.querySelectorAll<HTMLAnchorElement>('[data-close]').forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault()
+        const key = button.closest<HTMLElement>('[data-panel]')?.dataset.panel
+        close(bodies.find((b) => b.dataset.body === key))
+      })
+    })
+
+    system.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !system.classList.contains('is-open')) return
+      const key = (event.target as HTMLElement).closest<HTMLElement>('[data-panel]')?.dataset.panel
+      close(bodies.find((b) => b.dataset.body === key))
+    })
+
+    /* Pointer drift. Fine-pointer devices only — on a touch screen there is no
+       hover to drift with, and the listener would only cost battery. */
+    if (map && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      let frame = 0
+
+      system.addEventListener('pointermove', (event) => {
+        if (still.matches || system.classList.contains('is-open')) return
+        cancelAnimationFrame(frame)
+        frame = requestAnimationFrame(() => {
+          const box = system.getBoundingClientRect()
+          const x = (event.clientX / box.width - 0.5) * 18
+          const y = ((event.clientY - box.top) / box.height - 0.5) * 12
+          map.style.setProperty('--drift-x', `${x.toFixed(2)}px`)
+          map.style.setProperty('--drift-y', `${y.toFixed(2)}px`)
+        })
+      })
+
+      system.addEventListener('pointerleave', () => {
+        cancelAnimationFrame(frame)
+        map.style.removeProperty('--drift-x')
+        map.style.removeProperty('--drift-y')
+      })
+    }
+  }
+</script>

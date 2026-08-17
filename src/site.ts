@@ -22,9 +22,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '')
 /** Prefix an internal absolute path with Astro's configured deployment base. */
 export const withBase = (path: string) => `${base}${path.startsWith('/') ? path : `/${path}`}`
 
+/**
+ * The header's navigation. It exists because there is a second real page to
+ * navigate to — the home page is the system and nothing else, so the work
+ * lives at /studio/. If that ever collapses back into one page, this goes with
+ * it rather than pointing at anchors on a page you can already see.
+ */
+export const NAV_LINKS = [{ label: 'Studio', href: withBase('/studio/') }] as const
+
 export const FOOTER_LINKS = [
-  { label: 'Studio', href: withBase('/#studio') },
-  { label: 'Contact', href: withBase('/#contact') },
+  { label: 'Studio', href: withBase('/studio/') },
+  { label: 'Contact', href: withBase('/studio/#contact') },
   { label: 'Privacy', href: withBase('/privacy/') },
 ] as const
 
@@ -106,4 +114,72 @@ export const STUDIO_PROJECTS: StudioProject[] = [
     summary: 'Small utilities that solve one thing really well.',
     kind: 'Utility',
   },
+]
+
+/* ==========================================================================
+   The system — the opening view
+   ==========================================================================
+   Lunareos is the body at the centre; everything the studio builds orbits it.
+   Bodies are derived from FEATURED and STUDIO_PROJECTS rather than listed
+   again, so a project is added in one place and appears in both the system and
+   the index below it.
+
+   Nothing here is invented. Every value a visitor reads — name, status, kind,
+   summary, platforms — comes from the project's own entry, and the object
+   count is counted rather than asserted. A body with no href gets no link, the
+   same rule the studio index follows.
+   ========================================================================== */
+
+/** Degrees the orbital plane is tilted away from the viewer. */
+export const SYSTEM_TILT = 64
+
+export interface SystemBody {
+  key: string
+  name: string
+  /** The project's own status or kind — never a class invented for the view. */
+  kind: string
+  summary: string
+  href?: string
+  link?: string
+  platforms?: readonly string[]
+  /** Orbit radius as a fraction of the system's width. */
+  ring: number
+  /** Position on that orbit. 0° is right of centre, 90° is below it. */
+  angle: number
+  /** Dot diameter, in px, at the system's full size. */
+  size: number
+}
+
+/* Hand-placed so the three bodies sit in different quadrants and no label
+   crosses another. Projects beyond these fall to the outer ring on a spread of
+   angles — placed automatically rather than stacking on top of each other. */
+const ORBITS = [
+  { ring: 0.37, angle: 170, size: 15 },
+  { ring: 0.47, angle: 58, size: 12 },
+]
+
+const slug = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+
+export const SYSTEM_BODIES: SystemBody[] = [
+  {
+    key: slug(FEATURED.name),
+    name: FEATURED.name,
+    kind: FEATURED.status,
+    summary: FEATURED.summary,
+    href: FEATURED.href,
+    link: FEATURED.link,
+    platforms: FEATURED.platforms,
+    ring: 0.27,
+    angle: -40,
+    size: 22,
+  },
+  ...STUDIO_PROJECTS.map((project, i) => ({
+    key: slug(project.name),
+    name: project.name,
+    kind: project.kind,
+    summary: project.summary,
+    href: project.href,
+    platforms: project.platforms,
+    ...(ORBITS[i] ?? { ring: 0.47, angle: 128 + i * 53, size: 10 }),
+  })),
 ]

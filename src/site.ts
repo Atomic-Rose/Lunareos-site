@@ -169,7 +169,7 @@ export const SYSTEM_BODIES: SystemBody[] = [
     href: FEATURED.href,
     link: FEATURED.link,
     platforms: FEATURED.platforms,
-    ring: 0.27,
+    ring: 0.31,
     angle: -40,
     size: 22,
   },

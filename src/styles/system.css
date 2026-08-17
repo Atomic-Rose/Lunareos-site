@@ -148,8 +148,14 @@
    The first term reaches one gutter past the column, which puts the map's
    right edge exactly on the viewport edge — the system is the page here, and
    one that stops politely at a margin reads as a picture of a system. The
-   negative margin keeps that overhang from widening anything else. */
+   negative margin keeps that overhang from widening anything else.
+
+   `--cx` is the optical centre, not the geometric one. Every label extends to
+   the right of the body it names, so the drawn mass sits right of middle;
+   moving the whole system a few percent left puts what you actually see in the
+   centre of the space it is given. */
 .system__map {
+  --cx: 46.5%;
   container-type: inline-size;
   position: relative;
   width: min(calc(100% + var(--gutter)), calc((100svh - 20rem) / 0.58), 58rem);
@@ -172,7 +178,7 @@
 .system__glow {
   width: 62%;
   aspect-ratio: 1;
-  left: 50%;
+  left: var(--cx);
   top: 50%;
   translate: -50% -50%;
   background: var(--glow);
@@ -181,16 +187,30 @@
 }
 
 /* Every ring shares one plane, so the bodies on them share one projection and
-   the system reads as a system rather than as three unrelated ellipses. */
+   the system reads as a system rather than as three unrelated ellipses.
+
+   There are two copies of that plane — one behind the centre, one in front —
+   and each ring is clipped to the half of itself that belongs there. The plane
+   is tilted away from the viewer, so the *top* half of a ring in its own
+   coordinates is the far arc: clip-path is applied before the transform, which
+   is exactly what makes this work. */
 .system__plane {
   position: absolute;
   inset: 0;
   transform: rotateX(var(--tilt));
 }
 
+.system__plane--far :is(.system__ring, .system__planet-ring) {
+  clip-path: inset(0 0 50% 0);
+}
+
+.system__plane--near :is(.system__ring, .system__planet-ring) {
+  clip-path: inset(50% 0 0 0);
+}
+
 .system__ring {
   position: absolute;
-  left: 50%;
+  left: var(--cx);
   top: 50%;
   width: var(--d);
   aspect-ratio: 1;
@@ -204,12 +224,37 @@
   border-color: color-mix(in srgb, var(--border) 55%, transparent);
 }
 
+/* The centre's own ring. Split the same way, which is what stops it reading as
+   two lines ruled across the planet's face. */
+.system__planet-ring {
+  position: absolute;
+  left: var(--cx);
+  top: 50%;
+  /* Wide enough that its arcs clear the body on both sides. At the old 36.5%
+     the ring was narrower than the planet was tall, so correct occlusion hid
+     the whole thing — the fix for one bug produced another. It also has to
+     stay clear of the innermost orbit: at 52% the two ellipses were within a
+     few pixels of each other and read as one muddled band. 46% keeps the near
+     arc crossing the lower face and both ends emerging past the limbs, with
+     daylight between it and MUSE's orbit. */
+  width: 46%;
+  aspect-ratio: 1;
+  border: 1px solid color-mix(in srgb, var(--moonstone) 30%, transparent);
+  border-radius: 50%;
+  /* Centring is done inside `transform`, not with the `translate` property.
+     Every other element here centres with `translate` and none of them also
+     set `transform`; this one does, and the two did not compose — the ring
+     rendered a full half-width down and to the right of the body it belongs
+     to. One property, one unambiguous order. */
+  transform: translate(-50%, -50%) rotateX(10deg) rotateZ(-12deg);
+}
+
 /* Dust. Placed on the plane exactly the way the bodies are, and carrying
    nothing — it exists so the field reads as a place with things in it rather
    than as four perfect ellipses. */
 .system__dust {
   position: absolute;
-  left: calc(50% + var(--x));
+  left: calc(var(--cx) + var(--x));
   top: calc(50% + var(--y));
   width: 3px;
   height: 3px;
@@ -226,7 +271,7 @@
 
 .system__core {
   position: absolute;
-  left: 50%;
+  left: var(--cx);
   top: 50%;
   width: 24%;
   aspect-ratio: 1;
@@ -264,15 +309,6 @@
     0 0 100px rgba(79, 109, 255, 0.18);
 }
 
-.system__core-ring {
-  position: absolute;
-  inset: -26%;
-  border: 1px solid var(--border-lift);
-  border-radius: 50%;
-  transform: rotateX(74deg) rotateZ(-12deg);
-  box-shadow: 0 0 24px rgba(79, 109, 255, 0.12);
-}
-
 /* Below the body, not across it: a word set over a lit sphere has to fight the
    terminator for contrast and loses somewhere along its length. */
 .system__core-name {
@@ -294,7 +330,7 @@
 
 .system__body {
   position: absolute;
-  left: calc(50% + var(--x));
+  left: calc(var(--cx) + var(--x));
   top: calc(50% + var(--y));
   translate: -50% -50%;
   display: flex;
@@ -313,7 +349,12 @@
   flex-direction: row-reverse;
 }
 
+/* `position: relative` is load-bearing: without it the halo below resolves
+   against .system__body and draws a large ellipse around the dot *and* its
+   label, which reads as a bubble around each name rather than a ring around
+   each object. */
 .system__dot {
+  position: relative;
   flex-shrink: 0;
   width: var(--size);
   height: var(--size);
@@ -326,7 +367,8 @@
 }
 
 /* A halo, drawn on the dot rather than on the label, so the ring around a body
-   scales with the body. */
+   scales with the body. It is present at rest, not only on hover: a bare dot
+   reads as decoration, and a ringed one reads as an object you can select. */
 .system__dot::after {
   content: '';
   position: absolute;

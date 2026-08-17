@@ -104,7 +104,14 @@ const stars = Array.from({ length: 220 }, () => ({
       <div class="system__map" style={`--tilt:${SYSTEM_TILT}deg`} data-map>
         <span class="glow system__glow" aria-hidden="true"></span>
 
-        <div class="system__plane" aria-hidden="true">
+        {/* Every ring is drawn twice: its far arc here, behind the centre, and
+            its near arc again below it, in front. That is the whole depth cue
+            — a ring that passes entirely in front of a body reads as a line
+            over a circle, and one that passes entirely behind reads as a flat
+            diagram. The halves are the same element clipped top and bottom,
+            so they always meet exactly. */}
+        <div class="system__plane system__plane--far" aria-hidden="true">
+          <span class="system__planet-ring"></span>
           {allRings.map((r) => <span class="system__ring" style={`--d:${r * 200}%`} />)}
         </div>
 
@@ -117,8 +124,12 @@ const stars = Array.from({ length: 220 }, () => ({
         {/* The centre is lit from the upper right, so its terminator reads as
             the crescent the identity is drawn from. */}
         <div class="system__core" aria-hidden="true">
-          <span class="system__core-ring"></span>
           <span class="label system__core-name">{SITE.name}</span>
+        </div>
+
+        <div class="system__plane system__plane--near" aria-hidden="true">
+          <span class="system__planet-ring"></span>
+          {allRings.map((r) => <span class="system__ring" style={`--d:${r * 200}%`} />)}
         </div>
 
         {

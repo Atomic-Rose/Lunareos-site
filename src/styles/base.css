@@ -29,14 +29,17 @@ body {
   overflow-x: hidden; /* glow layers extend past the viewport by design */
 }
 
+/* Defaults are the *small* end of the scale — a bare heading is far more often
+   a project name than a display line. Every component that sets a larger size
+   sets its tracking and leading with it; see the note in tokens.css. */
 h1,
 h2,
 h3,
 h4 {
   color: var(--text);
   font-weight: 500;
-  letter-spacing: var(--track-display);
-  line-height: 1.06;
+  letter-spacing: var(--track-h3);
+  line-height: var(--leading-h3);
   text-wrap: balance;
   margin: 0;
 }

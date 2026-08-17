@@ -8,7 +8,10 @@ export const SITE = {
   legalName: 'Lunareos LLC',
   url: 'https://lunareos.com',
   email: 'hello@lunareos.com',
-  tagline: 'Software · Design · Imagination',
+  // The hero eyebrow. Names what Lunareos is rather than what it values —
+  // three abstract nouns read as agency positioning, and this line sits
+  // directly above a statement that already carries the ambition.
+  tagline: 'Independent software studio',
   // Same sentence as the hero lede, verbatim. Keep the two in sync.
   description:
     'Lunareos is an independent studio exploring ideas, problems, and possibilities through software.',
@@ -37,8 +40,15 @@ export const FEATURED = {
   name: 'MUSE',
   summary: 'A writing environment for long-form work.',
   status: 'In development',
+  /* Platform is the most publisher-level fact there is, and the one piece of
+     metadata a studio site owes a reader that a product site would bury. Kept
+     as data so the separator and casing are the template's decision. */
+  platforms: ['macOS', 'Windows', 'Linux', 'iOS', 'Android'],
   href: 'https://musewritingapp.com',
   link: 'musewritingapp.com',
+  /* Names what is on screen, under the visual. Deliberately does not repeat
+     the platform row above it. */
+  caption: 'Revision view',
   image: '/muse-preview.webp',
   imageW: 2600,
   imageH: 1625,
@@ -51,6 +61,17 @@ export const FEATURED = {
   imageNarrowH: 1040,
   imageAlt:
     'MUSE in its revision view, where every tracked edit is listed as a change the writer can keep or put back.',
+  /* The middle art direction: manuscript + Changes, binder dropped. Between
+     roughly 640px and 1150px the wide capture renders under 1000px, where a
+     three-panel desktop app stops being an interface and becomes texture.
+     OPTIONAL AND NOT YET RENDERED — the template omits the <source> until
+     this is a real render, because the wide master has no clean vertical cut
+     line and a pixel crop of it slices the chapter header mid-word. Until it
+     exists, the narrow detail covers that whole range instead. See the README
+     for the capture recipe; it needs museapp.html from the MUSE repo. */
+  imageMid: undefined as string | undefined,
+  imageMidW: 2000,
+  imageMidH: 1250,
 } as const
 
 /**
@@ -67,6 +88,11 @@ export interface StudioProject {
   summary: string
   kind: string
   href?: string
+  /* Same field as FEATURED.platforms, so a project promoted to the front of
+     the page carries its metadata with it. The index does not render this
+     yet — it is deliberately still name / summary / kind until the new
+     hierarchy has been judged on its own. */
+  platforms?: string[]
 }
 
 export const STUDIO_PROJECTS: StudioProject[] = [

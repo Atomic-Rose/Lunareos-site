@@ -35,11 +35,14 @@
   filter: blur(28px);
 }
 
+/* The copy column takes the width it needs and the mark takes what is left —
+   the reverse of the original split, where a 24rem mark column narrowed the
+   statement to make room for the logo. */
 .hero__inner {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(14rem, 26vw, 24rem);
+  grid-template-columns: minmax(0, 1fr) clamp(9rem, 16vw, 16rem);
   column-gap: clamp(2rem, 5vw, 5rem);
   align-items: center;
 }
@@ -59,29 +62,96 @@
   background: linear-gradient(to right, var(--border-lift), transparent);
 }
 
-/* No measure here on purpose: the grid column already constrains the headline,
-   and a `ch` cap on top of it was what broke the line at desktop but not at
-   tablet — a wider window should never produce more lines. The display size
-   ceiling in tokens.css is what keeps it to one line; see the note there. */
+/* The statement is meant to hold two lines, so the measure sets where it turns
+   rather than leaving it to whatever the column happens to be. Capped in `ch`
+   so the break holds as the size scales; the old rule against a `ch` cap only
+   applied while the headline was fighting to stay on one line. */
 .hero__title {
   font-size: var(--size-display);
+  letter-spacing: var(--track-display);
+  line-height: var(--leading-display);
+  max-width: 15ch;
 }
 
+/* Closer to the headline than a paragraph would be — it is the second half of
+   one statement, not the start of the page's body copy. */
 .hero__lede {
-  margin-top: clamp(1.5rem, 2.6vw, 2.25rem);
-  max-width: 50ch;
+  margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
+  max-width: 40ch;
 }
 
-/* The unmodified brand symbol, sitting in front of the glow. */
+/* The unmodified brand symbol, sitting in front of the glow. Smaller, flush to
+   the shell's right edge, and a step down in presence: the crescent is already
+   in the header, and a second full-strength copy of it competes with the
+   sentence it is supposed to be the atmosphere behind.
+
+   Flush rather than bleeding. A partial bleed only reads as deliberate when
+   the artwork is genuinely cut by the viewport, and at 1440–1728 there isn't
+   room to cut it without the mark stopping a few pixels short of the edge,
+   which reads as a mistake instead of as a decision. */
 .hero__mark {
   grid-column: 2;
-  justify-self: center;
+  justify-self: end;
   width: 100%;
+  opacity: 0.82;
 }
 
 .hero__mark img {
   width: 100%;
   height: auto;
+}
+
+/* --- Hero entrance --------------------------------------------------------
+   The page's only load animation: eyebrow, statement, supporting line, mark.
+   Opacity and a short rise, nothing else — no scale, no blur, no stagger long
+   enough to be watched. `backwards` holds the start state through the delay so
+   nothing flashes at full opacity first.
+
+   Guarded on no-preference rather than relying on the global reduced-motion
+   override in base.css, so a reduced-motion visitor gets no animation at all
+   instead of one compressed to 0.01ms. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__eyebrow,
+  .hero__title,
+  .hero__lede,
+  .hero__mark {
+    animation: hero-rise 500ms var(--ease) backwards;
+  }
+
+  .hero__eyebrow {
+    animation-delay: 40ms;
+  }
+
+  .hero__title {
+    animation-delay: 130ms;
+  }
+
+  .hero__lede {
+    animation-delay: 220ms;
+  }
+
+  /* The mark fades without rising — it is behind the composition, and moving
+     it draws exactly the attention the size reduction just took away. It
+     animates to its own 0.82, not to 1, because the keyframe sets no end
+     state. */
+  .hero__mark {
+    animation-name: hero-fade;
+    animation-delay: 300ms;
+    animation-duration: 550ms;
+  }
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 0;
+  }
 }
 
 /* --- Section head --------------------------------------------------------
@@ -140,12 +210,12 @@
   z-index: 1;
 }
 
-/* Name and summary on the left, the handoff link baseline-aligned right. */
+/* One column, read top to bottom: name → what it is → what it runs on → where
+   to go next. The link used to be baseline-aligned to the far right of the
+   row, which put the section's only action a full shell width from the
+   sentence it follows. */
 .feature__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: clamp(1.5rem, 4vw, 3rem);
+  max-width: 46ch;
   margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
 }
 
@@ -154,6 +224,7 @@
 .feature__title {
   font-size: var(--size-h1);
   letter-spacing: 0.06em;
+  line-height: var(--leading-heading);
 }
 
 .feature__lede {
@@ -162,10 +233,19 @@
   color: var(--text-muted);
 }
 
+/* Publisher metadata, in the same voice as the status label on the section's
+   rule line — a fact about the product, set as structure rather than as a row
+   of badges. */
+.feature__platforms {
+  margin-top: clamp(1.15rem, 2vw, 1.5rem);
+  color: var(--text-muted);
+}
+
 .feature__link {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
+  margin-top: clamp(1.5rem, 2.6vw, 2rem);
   white-space: nowrap;
   color: var(--accent-text);
   border-bottom: 1px solid var(--accent-dim);
@@ -187,15 +267,29 @@
 }
 
 /* The product visual carries the section — full shell width, framed by a
-   hairline rather than by a card. */
-.feature__visual {
+   hairline rather than by a card. The figure holds the frame plus its caption;
+   the frame itself is the link, so the whole visual is a click target. It is
+   `tabindex="-1"` in the markup: keyboard reaches the same destination through
+   the text link above, and a second stop on the same href is noise. */
+.feature__shot {
+  display: block;
   position: relative;
-  margin: 0;
   border: 1px solid var(--border-lift);
   border-radius: var(--radius-lg);
   overflow: clip;
   background: var(--surface);
   box-shadow: 0 40px 90px -40px rgb(0 0 0 / 0.85);
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.feature__shot:hover {
+  border-color: var(--accent-dim);
+  box-shadow: 0 44px 100px -40px rgb(0 0 0 / 0.9);
+}
+
+.feature__visual {
+  position: relative;
+  margin: 0;
 }
 
 .feature__visual picture {
@@ -205,6 +299,33 @@
 .feature__visual img {
   width: 100%;
   height: auto;
+}
+
+/* Names what is on screen. Deliberately does not repeat the platform row. */
+.feature__caption {
+  margin-top: 1.1rem;
+}
+
+/* --- The one scroll reveal ------------------------------------------------
+   Only the product visual, and only on the way in. Everything else on the page
+   stays where it is put. Behind @supports so a browser without view timelines
+   simply renders the static page, and behind no-preference so a reduced-motion
+   visitor does the same. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .feature__visual {
+      animation: shot-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+  }
+}
+
+@keyframes shot-reveal {
+  from {
+    opacity: 0.5;
+    translate: 0 14px;
+  }
 }
 
 /* --- Studio index --------------------------------------------------------- */
@@ -288,20 +409,24 @@ a.index__row:hover .index__meta .arrow {
 
 /* --- Contact -------------------------------------------------------------- */
 
+/* A coda, not the climax: a tighter band, a heading a full step below the
+   product wordmark, and an address sized to be read rather than announced.
+   The page should end on the work. */
 .contact {
   position: relative;
   overflow: clip;
   text-align: center;
+  padding-block: var(--band-tight);
 }
 
 .contact__glow {
-  width: min(120vw, 1000px);
+  width: min(110vw, 880px);
   aspect-ratio: 1;
   left: 50%;
   bottom: -62%;
   translate: -50% 0;
   background: var(--glow);
-  opacity: 0.45;
+  opacity: 0.3;
   filter: blur(30px);
 }
 
@@ -311,8 +436,10 @@ a.index__row:hover .index__meta .arrow {
 }
 
 .contact__title {
-  margin-top: 1.25rem;
-  font-size: var(--size-h1);
+  margin-top: 1.1rem;
+  font-size: var(--size-h2);
+  letter-spacing: var(--track-h2);
+  line-height: var(--leading-heading);
   max-width: 18ch;
   margin-inline: auto;
 }
@@ -326,10 +453,10 @@ a.index__row:hover .index__meta .arrow {
 .contact__address {
   display: inline-flex;
   align-items: center;
-  gap: 0.85rem;
-  margin-top: clamp(2rem, 3.5vw, 2.75rem);
-  font-size: clamp(1.25rem, 3vw, 2.125rem);
-  letter-spacing: -0.025em;
+  gap: 0.75rem;
+  margin-top: clamp(1.75rem, 3vw, 2.25rem);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  letter-spacing: -0.02em;
   color: var(--text);
   border-bottom: 1px solid var(--border-lift);
   padding-bottom: 0.4rem;
@@ -374,8 +501,10 @@ a.index__row:hover .index__meta .arrow {
 }
 
 .page-hero__title {
-  margin-top: 1.25rem;
-  font-size: var(--size-h1);
+  margin-top: 1.1rem;
+  font-size: var(--size-h2);
+  letter-spacing: var(--track-h2);
+  line-height: var(--leading-heading);
   max-width: 17ch;
 }
 
@@ -425,6 +554,29 @@ a.index__row:hover .index__meta .arrow {
   }
 }
 
+/* The wide capture stops being an interface below roughly this width — at
+   834px it renders about 757px across and a three-panel desktop app at 58% of
+   its design scale is texture. Everything under it gets a portrait detail
+   instead, capped at the crop's own 406px so it is never upscaled, and
+   centred so the plate reads as deliberate rather than as a wide image that
+   failed to fill its row.
+
+   Left-aligned, not centred: the name, summary, platforms, and link above it
+   all start at the shell's left edge, and a centred plate under left-aligned
+   copy reads as a card that floated in. Sharing the axis turns the space to
+   its right into a margin instead of into a gap.
+
+   This is also where the middle art direction lands once it is rendered; see
+   FEATURED.imageMid. */
+@media (max-width: 1150px) {
+  .feature__visual {
+    /* The crop's own rendered width is 406px, so this is the largest it goes
+       before it is being upscaled rather than displayed. */
+    max-width: 28rem;
+    margin-inline: 0;
+  }
+}
+
 /* Tablet and below: the index row folds to name + kind on one line, with the
    description running full width beneath it. */
 @media (max-width: 760px) {
@@ -447,23 +599,6 @@ a.index__row:hover .index__meta .arrow {
     grid-column: 1 / -1;
     grid-row: 2;
   }
-
-  .feature__head {
-    grid-template-columns: minmax(0, 1fr);
-    align-items: start;
-  }
-
-  .feature__link {
-    justify-self: start;
-  }
-
-  /* The narrow source is a portrait detail shot. Left at full width it would
-     tower over a tablet; capped, it stays a detail and goes full-bleed only
-     once the viewport is actually narrower than the cap. */
-  .feature__visual {
-    max-width: 26rem;
-    margin-inline: auto;
-  }
 }
 
 /* The status label has nowhere to go beside the heading at this width. */
@@ -483,7 +618,9 @@ a.index__row:hover .index__meta .arrow {
   }
 }
 
-@media (max-width: 820px) {
+/* Folds at the same width the footer does, so the page changes shape once
+   instead of twice in the 760–900 range. */
+@media (max-width: 860px) {
   .hero__inner {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -494,12 +631,20 @@ a.index__row:hover .index__meta .arrow {
     margin-bottom: 2.25rem;
   }
 
+  /* Here the mark is a masthead rather than atmosphere behind a headline, so
+     it sits at full strength inside the shell. */
   .hero__mark {
     grid-column: 1;
     justify-self: start;
     order: -1;
     width: clamp(5rem, 22vw, 8rem);
+    margin-right: 0;
     margin-bottom: 2.25rem;
+    opacity: 1;
+  }
+
+  .hero__title {
+    max-width: 18ch;
   }
 
   .hero__glow {

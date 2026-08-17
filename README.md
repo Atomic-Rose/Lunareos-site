@@ -47,9 +47,16 @@ Both middle sections are rendered from `src/site.ts`; `index.astro` holds no
 project copy.
 
 - `FEATURED` — the one project on the front of the page. It gets the large
-  treatment and the product visual.
+  treatment, the platform row, and the product visual.
 - `STUDIO_PROJECTS` — the index below it. Append an object with `name`,
   `summary`, `kind`, and optionally `href`.
+
+`platforms` is a plain array of names (`['macOS', 'Windows', …]`); the template
+owns the separator, so don't put `·` in the data. It renders under the summary
+in the same mono voice as the status label — publisher metadata, not badges.
+`StudioProject` accepts the same field, but **the index does not render it
+yet**: the studio section is deliberately unchanged until the new hierarchy has
+been judged on its own.
 
 `kind` is a single mono word (`Experiment`, `Utility`, `Available`,
 `In development`). Every kind renders at the same weight and colour on purpose:
@@ -94,12 +101,46 @@ document.body.dataset.view = 'edit'
 document.querySelectorAll('.demo').forEach((e) => e.remove())  // mockup controls
 ```
 
+### The three art directions
+
+The `<picture>` has three bands, because one capture cannot hold a three-panel
+desktop app at every width:
+
+| Band | Source | Why |
+|---|---|---|
+| `min-width: 1151px` | `muse-preview.webp` | The whole application, rendered ≥1010px wide — the point at which its own type is still readable. |
+| `641px–1150px` | `muse-preview-mid.webp` *(not yet rendered)* | Manuscript + Changes, binder dropped. At 834px the wide capture renders ~757px, which is 58% of its design scale — texture, not an interface. |
+| `max-width: 640px` | `muse-preview-narrow.webp` | A detail shot of the Changes panel. A phone cannot hold the whole window at a legible size. |
+
+**The middle capture does not exist yet.** Until it does, `FEATURED.imageMid`
+is `undefined` and the template falls back to the narrow detail across that
+whole band — legible, and honest about being a detail, which a shrunken
+overview is not. Do **not** produce it by cropping `muse-preview.webp`: the
+title bar, the chapter header, and the manuscript panel all have content at
+different x offsets, so every vertical cut line slices either `3,195 words`,
+the view switcher, or the manuscript text itself. It has to be a real capture.
+
+Render it the same way the wide one is, at 8:5 and 2×, with the binder
+collapsed — the mockup's own control, not a CSS override:
+
+```bash
+CH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+"$CH" --headless=new --hide-scrollbars --force-device-scale-factor=2 \
+      --screenshot=shot-mid.png --window-size=1000,625 --virtual-time-budget=6000 \
+      "file://$PWD/museapp.html"
+cwebp -q 85 -m 6 shot-mid.png -o public/muse-preview-mid.webp
+```
+
+Then set `imageMid: '/muse-preview-mid.webp'` in `site.ts` with its real
+dimensions. Nothing else needs to change — the `<source>` is already wired and
+appears as soon as the field is a string.
+
 ### The narrow crop
 
-`public/muse-preview-narrow.webp` (812×1040) is the same mockup at
-`max-width: 760px`, wired through a `<picture>` element. A three-panel desktop
-app shrunk to a phone is texture, not an interface, so narrow viewports get a
-**detail shot** of the Changes panel instead of the whole window.
+`public/muse-preview-narrow.webp` (812×1040) is the same mockup, wired through
+the `<picture>` element above. A three-panel desktop app shrunk to a phone is
+texture, not an interface, so narrow viewports get a **detail shot** of the
+Changes panel instead of the whole window.
 
 It is a viewport crop, not an image crop — an iframe of the mockup positioned
 inside a clipping box, so the capture is a true render at 2× rather than a
@@ -117,11 +158,13 @@ Screenshot that at `--window-size=406,520 --force-device-scale-factor=2`, then
 cutting through a row of buttons reads as a mistake, while cutting through the
 next card's header reads as a list that scrolls.
 
-Two things follow from having two sources. `alt` lives on the `<img>` and cannot
-vary per source, so it describes the idea on screen rather than the pixels of
-either crop. And the crop is portrait, so `.feature__visual` takes a
-`max-width` at the same breakpoint — left at full width it would tower over a
-tablet.
+Two things follow from having more than one source. `alt` lives on the `<img>`
+and cannot vary per source, so it describes the idea on screen rather than the
+pixels of any one crop. And the crop is portrait, so `.feature__visual` takes a
+`max-width` of `28rem` below 1150px — a little over the crop's own 406px
+rendered width, so it is never meaningfully upscaled — and sits **left-aligned**
+with the copy above it. Centred under left-aligned copy it read as a card that
+had floated in.
 
 **WebP with no fallback** is deliberate. It is not the site's oldest
 requirement — `color-mix()` in `tokens.css` needs Safari 16.2 (2022) and WebP
@@ -148,6 +191,28 @@ structure (labels, metadata). Jost is the brand kit's recommended pairing —
 both it and the wordmark are geometric, so the UI type echoes the letterforms
 instead of sitting beside them.
 
+### The scale
+
+One order, and it is the order the page wants read:
+
+| Token | Ceiling | Used by |
+|---|---|---|
+| `--size-display` | 5.25rem | The hero statement, and nothing else |
+| `--size-h1` | 3.25rem | A product wordmark |
+| `--size-h2` | 2.375rem | Contact, inner-page titles |
+| `--size-h3` | 1.375rem | Project names, legal headings |
+
+The hero used to be capped at 3.375rem so its headline held one line, which put
+it **below** the product and contact headings at every width — the statement was
+the third-largest thing on its own page. A display setting is allowed to wrap;
+two lines is the intended state, and the ceiling is now set by the statement
+rather than by the line count.
+
+Tracking and leading are set **per level**, not once for all headings: what
+keeps 84px from looking loose makes 22px look jammed. Bare `h1`–`h4` default to
+the small end (`--track-h3`, `--leading-h3`) and every component that sets a
+larger size sets its tracking and leading with it.
+
 ### The glow
 
 `--glow` / `.glow` is the site's one atmospheric device — a soft accent radial
@@ -157,6 +222,28 @@ It is always a background layer behind content, **never composited onto logo
 artwork**, which the kit's rules explicitly forbid. (Brand Kit v2 declared this
 gradient in all 18 of its SVGs and referenced it in none; v4 removed it as dead
 code. The site keeps the idea as its own, applied only to the page.)
+
+### Motion
+
+Two animations exist on the whole site, both pure CSS — the zero-JavaScript
+build is unchanged.
+
+1. **The hero entrance.** Eyebrow, statement, supporting line, then the mark:
+   opacity plus a 12px rise, 500ms, staggered ~90ms apart. The mark fades
+   without rising and ends at its own `0.82`, because moving it takes back the
+   attention the size reduction just gave to the headline.
+2. **One reveal on the product visual**, on a `view()` scroll timeline.
+
+Both are wrapped in `prefers-reduced-motion: no-preference` rather than relying
+on the global override in `base.css`, so a reduced-motion visitor gets no
+animation at all rather than one compressed to 0.01ms. The reveal is also
+behind `@supports (animation-timeline: view())`, so a browser without scroll
+timelines renders the static page.
+
+**Nothing else animates**, and that is a decision, not a gap: index rows,
+section headings, the contact block, and the glow layers are all deliberately
+static. Adding a reveal to each section is what turns a studio site into a
+generic animated landing page.
 
 ## Brand
 

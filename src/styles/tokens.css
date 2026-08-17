@@ -77,18 +77,36 @@
   --font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Ceiling is set so the hero headline holds one line inside its grid column
-     (792px at wide viewports). Raising it wraps the headline. */
-  --size-display: clamp(2rem, 4.2vw, 3.375rem);
-  --size-h1: clamp(2.25rem, 5vw, 4rem);
-  --size-h3: clamp(1.125rem, 1.5vw, 1.375rem);
+  /* One scale, in strict order of what the page wants read first:
+     display (the hero statement) → h1 (a product) → h2 (a section closer) →
+     h3 (a project name). The hero used to be capped so its headline held one
+     line, which put it *below* the product and contact headings at every
+     width; a deliberate two-line hero is the correct setting for a display
+     size, so the ceiling is now set by the statement rather than by the line
+     count. Nothing below display may exceed it. */
+  --size-display: clamp(2.625rem, 6.2vw, 5.25rem); /* hero statement, only   */
+  --size-h1: clamp(2rem, 3.6vw, 3.25rem); /*         product wordmark        */
+  --size-h2: clamp(1.75rem, 2.6vw, 2.375rem); /*     contact, page heroes    */
+  --size-h3: clamp(1.125rem, 1.5vw, 1.375rem); /*    project names, legal    */
   --size-lede: clamp(1.0625rem, 1.45vw, 1.3125rem);
   --size-body: 1rem;
   --size-small: 0.875rem;
-  --size-label: 0.6875rem; /* mono labels — always uppercase + tracked      */
+  --size-label: 0.75rem; /*  mono labels — always uppercase + tracked        */
 
-  --track-display: -0.03em;
+  /* Tracking is a function of size, so it is set per level rather than once
+     for every heading: what keeps 84px from looking loose makes 22px look
+     jammed. Below h3 the type takes no negative tracking at all. */
+  --track-display: -0.035em;
+  --track-h1: -0.025em;
+  --track-h2: -0.02em;
+  --track-h3: -0.01em;
   --track-label: 0.12em;
+
+  /* Same argument for leading: a display line can sit tight because there is
+     one of it; a wrapping mobile headline cannot. */
+  --leading-display: 1.02;
+  --leading-heading: 1.08;
+  --leading-h3: 1.25;
 
   /* --- Space -------------------------------------------------------------- */
   --gutter: clamp(1.25rem, 4.5vw, 4.5rem);

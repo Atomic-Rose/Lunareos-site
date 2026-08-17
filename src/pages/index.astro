@@ -18,7 +18,7 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
     <div class="glow hero__glow" aria-hidden="true"></div>
 
     <div class="shell hero__inner">
-      <p class="label hero__eyebrow">Software · Design · Imagination</p>
+      <p class="label hero__eyebrow">{SITE.tagline}</p>
 
       <div class="hero__copy">
         <h1 class="hero__title" id="hero-title">Software for whatever comes next.</h1>
@@ -53,11 +53,17 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
         <p class="label status">{FEATURED.status}</p>
       </div>
 
+      {/* Name, summary, platforms, handoff — in that order, in one column.
+          The link used to sit baseline-right of the name, a full shell width
+          away from the sentence it follows from; it belongs at the end of the
+          copy it is the next step after. */}
       <div class="feature__head">
-        <div>
-          <h3 class="feature__title">{FEATURED.name}</h3>
-          <p class="lede feature__lede">{FEATURED.summary}</p>
-        </div>
+        <h3 class="feature__title">{FEATURED.name}</h3>
+        <p class="lede feature__lede">{FEATURED.summary}</p>
+
+        <p class="label feature__platforms">
+          {FEATURED.platforms.join(' · ')}
+        </p>
 
         {/* MUSE has its own site; this is the handoff to it. */}
         <a class="feature__link" href={FEATURED.href}>
@@ -65,25 +71,49 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
         </a>
       </div>
 
-      {/* The breakpoint matches the one the feature head folds at, so the
-          visual and the copy above it change shape together. */}
+      {/* The middle source only renders once it is a real capture; until then
+          the narrow detail covers everything below the wide crop's legible
+          width. See FEATURED.imageMid. */}
       <figure class="feature__visual">
-        <picture>
-          <source
-            media="(max-width: 760px)"
-            srcset={withBase(FEATURED.imageNarrow)}
-            width={FEATURED.imageNarrowW}
-            height={FEATURED.imageNarrowH}
-          />
-          <img
-            src={withBase(FEATURED.image)}
-            alt={FEATURED.imageAlt}
-            width={FEATURED.imageW}
-            height={FEATURED.imageH}
-            loading="lazy"
-            decoding="async"
-          />
-        </picture>
+        <a class="feature__shot" href={FEATURED.href} tabindex="-1">
+          <picture>
+            <source
+              media="(max-width: 640px)"
+              srcset={withBase(FEATURED.imageNarrow)}
+              width={FEATURED.imageNarrowW}
+              height={FEATURED.imageNarrowH}
+            />
+            {
+              FEATURED.imageMid ? (
+                <source
+                  media="(max-width: 1150px)"
+                  srcset={withBase(FEATURED.imageMid)}
+                  width={FEATURED.imageMidW}
+                  height={FEATURED.imageMidH}
+                />
+              ) : (
+                <source
+                  media="(max-width: 1150px)"
+                  srcset={withBase(FEATURED.imageNarrow)}
+                  width={FEATURED.imageNarrowW}
+                  height={FEATURED.imageNarrowH}
+                />
+              )
+            }
+            <img
+              src={withBase(FEATURED.image)}
+              alt={FEATURED.imageAlt}
+              width={FEATURED.imageW}
+              height={FEATURED.imageH}
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </a>
+
+        <figcaption class="label feature__caption">
+          {FEATURED.name} · {FEATURED.caption}
+        </figcaption>
       </figure>
     </div>
   </section>

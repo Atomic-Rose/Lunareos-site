@@ -107,7 +107,7 @@ project copy.
 
 - `FEATURED` — the one project on the front of the page. It gets the large
   treatment, the platform row, and the product visual.
-- `STUDIO_PROJECTS` — the index below it. Append an object with `name`,
+- `STUDIO_PROJECTS` — the product index below it. Append an object with `name`,
   `summary`, `kind`, and optionally `href`.
 
 `platforms` is a plain array of names (`['macOS', 'Windows', …]`); the template
@@ -120,12 +120,9 @@ absent**, which is why neither current project shows one: their platforms aren't
 decided, and inventing them is exactly the filler this page refuses. Add the
 array when the answer is real.
 
-`kind` is a single mono word (`Experiment`, `Utility`, `Available`,
-`In development`). Every kind renders at the same weight and colour on purpose:
-these are labels *on* the work, not a taxonomy the studio is sorted into.
-Grouping the index into Writing / Security / Utilities is the thing the page is
-specifically built not to do — the range is meant to show through the projects
-themselves.
+`kind` is a single mono phrase (`Available`, `Pre-alpha`, `In development`).
+Every kind renders at the same weight and colour on purpose: these are labels
+*on* the work, not a taxonomy the studio is sorted into.
 
 **Omit `href` until there is somewhere real to send people.** The row then
 renders as a plain `<div>` with no arrow, rather than an arrow pointing at a

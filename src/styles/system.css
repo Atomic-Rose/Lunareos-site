@@ -58,16 +58,16 @@
   z-index: 1;
   width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  grid-template-columns: minmax(0, 0.58fr) minmax(0, 1.42fr);
   align-items: center;
-  gap: clamp(2rem, 5vw, 4rem);
+  gap: clamp(1.5rem, 3vw, 2.75rem);
 }
 
 .system__eyebrow {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  margin-bottom: clamp(1.1rem, 2.4vw, 1.75rem);
 }
 
 .system__eyebrow::after {
@@ -78,15 +78,16 @@
 }
 
 .system__title {
-  font-size: var(--size-display);
-  letter-spacing: var(--track-display);
-  line-height: var(--leading-display);
-  max-width: 18ch;
+  font-size: clamp(2.625rem, 4.8vw, 4.45rem);
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  max-width: 16.25ch;
 }
 
 .system__lede {
-  margin-top: clamp(1.5rem, 2.4vw, 2.125rem);
-  max-width: 38ch;
+  margin-top: clamp(1.2rem, 2vw, 1.65rem);
+  max-width: 31ch;
+  font-size: clamp(1rem, 1.15vw, 1.125rem);
 }
 
 /* --- The map --------------------------------------------------------------
@@ -98,6 +99,7 @@
    between the statement and the system — without it the two halves float side
    by side with nothing holding them to each other. */
 .system__stage {
+  position: relative;
   align-self: stretch;
   display: grid;
   align-content: center;
@@ -108,6 +110,45 @@
 
 .system__head {
   margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.system__transmission {
+  position: absolute;
+  z-index: 7;
+  left: clamp(1.5rem, 4vw, 4rem);
+  bottom: clamp(3.25rem, 6vw, 4.75rem);
+  width: min(20rem, 36%);
+  pointer-events: none;
+}
+
+.system__transmission-head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.system__transmission-head::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(to right, var(--border-lift), transparent);
+}
+
+.system__transmission-title {
+  font-family: var(--font-mono);
+  font-size: var(--size-h3);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  line-height: 1;
+}
+
+.system__transmission-copy {
+  margin-top: 0.85rem;
+  max-width: 27ch;
+  color: var(--text-muted);
+  font-size: var(--size-small);
+  line-height: 1.55;
 }
 
 .system__caption {
@@ -121,7 +162,7 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-top: clamp(2rem, 4vw, 3rem);
+  margin-top: clamp(1.65rem, 3vw, 2.25rem);
 }
 
 .system__hint-line {
@@ -155,10 +196,10 @@
    moving the whole system a few percent left puts what you actually see in the
    centre of the space it is given. */
 .system__map {
-  --cx: 46.5%;
+  --cx: 47.5%;
   container-type: inline-size;
   position: relative;
-  width: min(calc(100% + var(--gutter)), calc((100svh - 20rem) / 0.58), 58rem);
+  width: min(calc(100% + var(--gutter) * 1.2), calc((100svh - 18rem) / 0.58), 64rem);
   margin-right: calc(var(--gutter) * -1);
   aspect-ratio: 1 / 0.58;
   translate: var(--drift-x, 0) var(--drift-y, 0);
@@ -176,6 +217,7 @@
 }
 
 .system__glow {
+  z-index: 0;
   width: 62%;
   aspect-ratio: 1;
   left: var(--cx);
@@ -184,6 +226,69 @@
   background: var(--glow);
   opacity: 0.5;
   filter: blur(30px);
+}
+
+/* --- Instrument layer -----------------------------------------------------
+   Quiet UI furniture, not decoration: it gives the map a centre, an active
+   readout, and a subtle sense that the orbiting bodies can be inspected. */
+
+.system__instrument {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.system__axis {
+  position: absolute;
+  opacity: 0.36;
+}
+
+.system__axis--x {
+  left: 7%;
+  right: 7%;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--border-lift), transparent);
+}
+
+.system__axis--y {
+  left: var(--cx);
+  top: 14%;
+  bottom: 14%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--border-lift), transparent);
+}
+
+.system__reticle {
+  position: absolute;
+  left: var(--cx);
+  top: 50%;
+  width: 31%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border: 1px solid color-mix(in srgb, var(--border-lift) 56%, transparent);
+  border-radius: 50%;
+  opacity: 0.62;
+}
+
+.system__reticle::before,
+.system__reticle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  height: 0.8rem;
+  translate: -50% 0;
+  background: var(--border-lift);
+}
+
+.system__reticle::before {
+  top: -0.4rem;
+}
+
+.system__reticle::after {
+  bottom: -0.4rem;
 }
 
 /* Every ring shares one plane, so the bodies on them share one projection and
@@ -198,6 +303,14 @@
   position: absolute;
   inset: 0;
   transform: rotateX(var(--tilt));
+}
+
+.system__plane--far {
+  z-index: 2;
+}
+
+.system__plane--near {
+  z-index: 5;
 }
 
 .system__plane--far :is(.system__ring, .system__planet-ring) {
@@ -219,9 +332,9 @@
   border-radius: 50%;
 }
 
-/* The outermost ring is the one nothing is on yet. */
-.system__ring:last-child {
-  border-color: color-mix(in srgb, var(--border) 55%, transparent);
+.system__ring--featured {
+  border-color: color-mix(in srgb, var(--accent) 34%, var(--border-lift));
+  box-shadow: 0 0 36px rgba(79, 109, 255, 0.09);
 }
 
 /* The centre's own ring. Split the same way, which is what stops it reading as
@@ -254,6 +367,7 @@
    than as four perfect ellipses. */
 .system__dust {
   position: absolute;
+  z-index: 3;
   left: calc(var(--cx) + var(--x));
   top: calc(50% + var(--y));
   width: 3px;
@@ -271,6 +385,7 @@
 
 .system__core {
   position: absolute;
+  z-index: 4;
   left: var(--cx);
   top: 50%;
   width: 24%;
@@ -330,6 +445,7 @@
 
 .system__body {
   position: absolute;
+  z-index: 6;
   left: calc(var(--cx) + var(--x));
   top: calc(50% + var(--y));
   translate: -50% -50%;
@@ -343,10 +459,35 @@
   padding: 0.75rem;
   margin: -0.75rem;
   border-radius: var(--radius);
+  isolation: isolate;
 }
 
 .system__body--left {
   flex-direction: row-reverse;
+}
+
+.system__body::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: calc(0.75rem + var(--size) + 0.5rem);
+  right: 0.5rem;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(to right, var(--accent), transparent);
+  opacity: 0;
+  transform: scaleX(0.35);
+  transform-origin: left;
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.35s var(--ease);
+}
+
+.system__body--left::before {
+  left: 0.5rem;
+  right: calc(0.75rem + var(--size) + 0.5rem);
+  background: linear-gradient(to left, var(--accent), transparent);
+  transform-origin: right;
 }
 
 /* `position: relative` is load-bearing: without it the halo below resolves
@@ -355,6 +496,7 @@
    each object. */
 .system__dot {
   position: relative;
+  z-index: 1;
   flex-shrink: 0;
   width: var(--size);
   height: var(--size);
@@ -364,6 +506,19 @@
     inset -3px -3px 6px rgba(0, 0, 0, 0.55),
     0 0 16px rgba(203, 213, 225, 0.25);
   transition: box-shadow 0.25s var(--ease), scale 0.25s var(--ease);
+}
+
+.system__dot::before {
+  content: '';
+  position: absolute;
+  inset: -17px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  opacity: 0;
+  scale: 0.76;
+  transition:
+    opacity 0.25s var(--ease),
+    scale 0.35s var(--ease);
 }
 
 /* A halo, drawn on the dot rather than on the label, so the ring around a body
@@ -379,6 +534,8 @@
 }
 
 .system__label {
+  position: relative;
+  z-index: 1;
   font-family: var(--font-mono);
   font-size: var(--size-label);
   letter-spacing: var(--track-label);
@@ -400,12 +557,26 @@
   text-transform: none;
 }
 
+.system__body:hover::before,
+.system__body:focus-visible::before,
+.system__body[aria-expanded='true']::before {
+  opacity: 0.9;
+  transform: scaleX(1);
+}
+
 .system__body:hover .system__dot,
 .system__body:focus-visible .system__dot {
   scale: 1.12;
   box-shadow:
     inset -3px -3px 6px rgba(0, 0, 0, 0.55),
     0 0 24px rgba(79, 109, 255, 0.5);
+}
+
+.system__body:hover .system__dot::before,
+.system__body:focus-visible .system__dot::before,
+.system__body[aria-expanded='true'] .system__dot::before {
+  opacity: 0.34;
+  scale: 1;
 }
 
 .system__body:hover .system__dot::after,
@@ -424,6 +595,42 @@
   border-color: var(--accent);
 }
 
+.system__body[aria-expanded='true'] .system__label {
+  color: var(--text);
+}
+
+.system__body[data-body='muse'] {
+  z-index: 8;
+}
+
+.system__body[data-body='muse'] .system__dot {
+  box-shadow:
+    inset -3px -3px 6px rgba(0, 0, 0, 0.55),
+    0 0 24px rgba(203, 213, 225, 0.34),
+    0 0 58px rgba(79, 109, 255, 0.46);
+}
+
+.system__body[data-body='muse'] .system__dot::before {
+  opacity: 0.3;
+  scale: 1;
+}
+
+.system__body[data-body='muse'] .system__dot::after {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--moonstone));
+}
+
+.system__body[data-body='muse'] .system__label {
+  color: var(--text);
+}
+
+.system__body[data-body='bastion'] .system__dot {
+  opacity: 0.82;
+}
+
+.system__body[data-body='bastion'] .system__label {
+  color: var(--text-muted);
+}
+
 /* --- Object panels --------------------------------------------------------
    Not a modal: the system stays visible and operable behind it, so this takes
    focus but never traps it. */
@@ -440,7 +647,7 @@
   right: var(--gutter);
   top: 50%;
   translate: 0 -50%;
-  width: min(26rem, calc(100% - var(--gutter) * 2));
+  width: min(28rem, calc(100% - var(--gutter) * 2));
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(18px);
   border: 1px solid var(--border-lift);
@@ -504,7 +711,39 @@
 .object__summary {
   margin-top: 1rem;
   color: var(--text-muted);
-  max-width: 30ch;
+  max-width: 33ch;
+}
+
+.object__facts {
+  display: grid;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.object__fact {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 0.46fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.object__fact dt,
+.object__fact dd {
+  margin: 0;
+}
+
+.object__fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.object__fact dd {
+  color: var(--text-body);
+  line-height: 1.45;
 }
 
 .object__platforms {
@@ -521,6 +760,12 @@
   border-bottom: 1px solid var(--accent-dim);
   padding-bottom: 0.4rem;
   transition: border-color 0.2s var(--ease);
+}
+
+.object__note {
+  display: inline-block;
+  margin-top: 1.75rem;
+  color: var(--text-faint);
 }
 
 .object__link:hover {
@@ -543,7 +788,8 @@
 @media (prefers-reduced-motion: no-preference) {
   .system__eyebrow,
   .system__title,
-  .system__lede {
+  .system__lede,
+  .system__transmission {
     animation: rise 500ms var(--ease) backwards;
   }
 
@@ -559,9 +805,14 @@
     animation-delay: 220ms;
   }
 
-  .system__map {
-    animation: system-settle 900ms var(--ease) 260ms backwards;
+  .system__transmission {
+    animation-delay: 300ms;
   }
+
+  .system__map {
+    animation: system-settle 900ms var(--ease) 340ms backwards;
+  }
+
 }
 
 @keyframes system-settle {
@@ -591,6 +842,14 @@
   .system__stage {
     padding-left: 0;
     border-left: 0;
+  }
+
+  .system__transmission {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    width: min(100%, 30rem);
+    margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
   }
 
   .system__map {
@@ -624,6 +883,10 @@
   .system__label {
     font-size: 0.625rem;
     letter-spacing: 0.08em;
+  }
+
+  .system__transmission-copy {
+    max-width: 100%;
   }
 
   .system__body {

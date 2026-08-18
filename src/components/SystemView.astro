@@ -1,5 +1,5 @@
 ---
-import { SITE, SYSTEM_BODIES, SYSTEM_TILT } from '../site'
+import { FEATURED, SITE, SYSTEM_BODIES, SYSTEM_TILT } from '../site'
 
 /*
  * The opening view: Lunareos at the centre, everything it builds in orbit.
@@ -35,10 +35,14 @@ const bodies = SYSTEM_BODIES.map((body) => ({
   side: Math.cos(rad(body.angle)) < 0 ? 'left' : 'right',
 }))
 
-/* One ring per orbit that is actually occupied, plus a wider one that isn't —
-   the studio has room. */
+/* One ring per orbit that is actually occupied. The system is now products
+   only, so the diagram should feel deliberate rather than expansive. */
 const rings = [...new Set(bodies.map((b) => b.ring))].sort((a, b) => a - b)
-const allRings = [...rings, rings[rings.length - 1] + 0.06]
+const featuredKey = FEATURED.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+const allRings = rings.map((ring) => ({
+  ring,
+  featured: bodies.some((body) => body.key === featuredKey && body.ring === ring),
+}))
 
 /* Dust, on the same plane and placed the same way as the bodies. It carries no
    meaning and is not interactive — it is there so the field reads as a place
@@ -96,13 +100,27 @@ const stars = Array.from({ length: 220 }, () => ({
       <div class="section__head system__head">
         <p class="label">System</p>
         <span class="rule" aria-hidden="true"></span>
-        <p class="label">{bodies.length} objects</p>
+        <p class="label">{bodies.length} products</p>
+      </div>
+
+      <div class="system__transmission" aria-labelledby="system-transmission-title">
+        <div class="system__transmission-head">
+          <p class="label">Current signal</p>
+          <p class="label label--accent">{FEATURED.status}</p>
+        </div>
+        <h2 class="system__transmission-title" id="system-transmission-title">{FEATURED.name}</h2>
+        <p class="system__transmission-copy">{FEATURED.summary}</p>
       </div>
 
       {/* `--tilt` is read by the ring transforms; the body positions are
           already resolved, so nothing here depends on it at runtime. */}
       <div class="system__map" style={`--tilt:${SYSTEM_TILT}deg`} data-map>
         <span class="glow system__glow" aria-hidden="true"></span>
+        <div class="system__instrument" aria-hidden="true">
+          <span class="system__axis system__axis--x"></span>
+          <span class="system__axis system__axis--y"></span>
+          <span class="system__reticle"></span>
+        </div>
 
         {/* Every ring is drawn twice: its far arc here, behind the centre, and
             its near arc again below it, in front. That is the whole depth cue
@@ -112,7 +130,14 @@ const stars = Array.from({ length: 220 }, () => ({
             so they always meet exactly. */}
         <div class="system__plane system__plane--far" aria-hidden="true">
           <span class="system__planet-ring"></span>
-          {allRings.map((r) => <span class="system__ring" style={`--d:${r * 200}%`} />)}
+          {
+            allRings.map((r) => (
+              <span
+                class:list={['system__ring', r.featured && 'system__ring--featured']}
+                style={`--d:${r.ring * 200}%`}
+              />
+            ))
+          }
         </div>
 
         {
@@ -129,7 +154,14 @@ const stars = Array.from({ length: 220 }, () => ({
 
         <div class="system__plane system__plane--near" aria-hidden="true">
           <span class="system__planet-ring"></span>
-          {allRings.map((r) => <span class="system__ring" style={`--d:${r * 200}%`} />)}
+          {
+            allRings.map((r) => (
+              <span
+                class:list={['system__ring', r.featured && 'system__ring--featured']}
+                style={`--d:${r.ring * 200}%`}
+              />
+            ))
+          }
         </div>
 
         {
@@ -185,6 +217,17 @@ const stars = Array.from({ length: 220 }, () => ({
             </h2>
             <p class="object__summary">{body.summary}</p>
 
+            {body.details && (
+              <dl class="object__facts">
+                {body.details.map((detail) => (
+                  <div class="object__fact">
+                    <dt>{detail.label}</dt>
+                    <dd>{detail.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
             {body.platforms && (
               <p class="label object__platforms">{body.platforms.join(' · ')}</p>
             )}
@@ -195,6 +238,8 @@ const stars = Array.from({ length: 220 }, () => ({
                 {body.link ?? 'Visit site'} <span class="arrow" aria-hidden="true">↗</span>
               </a>
             )}
+
+            {!body.href && <p class="label object__note">More details soon</p>}
           </div>
         </article>
       ))

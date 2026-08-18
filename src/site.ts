@@ -47,7 +47,12 @@ export const FOOTER_LINKS = [
 export const FEATURED = {
   name: 'MUSE',
   summary: 'A writing environment for long-form work.',
-  status: 'In development',
+  status: 'Pre-alpha',
+  details: [
+    { label: 'Stage', value: 'Pre-alpha' },
+    { label: 'Focus', value: 'Long-form writing' },
+    { label: 'Mode', value: 'Revision-first workflow' },
+  ],
   /* Platform is the most publisher-level fact there is, and the one piece of
      metadata a studio site owes a reader that a product site would bury. Kept
      as data so the separator and casing are the template's decision. */
@@ -87,14 +92,18 @@ export const FEATURED = {
  * meant to show through the projects themselves, so don't group these into
  * sections or the page starts making an argument instead of showing work.
  *
- * To add one: append an object. `kind` is a single mono word (Experiment,
- * Utility, Available, In development). Omit `href` until there is somewhere
- * real to send people; the row then renders without a link or an arrow.
+ * To add one: append an object. `kind` is a single mono phrase (Available,
+ * Pre-alpha, In development). Omit `href` until there is somewhere real to
+ * send people; the row then renders without a link or an arrow.
  */
 export interface StudioProject {
   name: string
   summary: string
   kind: string
+  details?: readonly {
+    label: string
+    value: string
+  }[]
   href?: string
   /* Same field as FEATURED.platforms, so a project promoted to the front of
      the page carries its metadata with it. The index does not render this
@@ -107,12 +116,12 @@ export const STUDIO_PROJECTS: StudioProject[] = [
   {
     name: 'Bastion',
     summary: 'Security operations toolkit for visibility, response, and control.',
-    kind: 'Experiment',
-  },
-  {
-    name: 'Tiny Tools',
-    summary: 'Small utilities that solve one thing really well.',
-    kind: 'Utility',
+    kind: 'In development',
+    details: [
+      { label: 'Stage', value: 'In development' },
+      { label: 'Focus', value: 'Security operations' },
+      { label: 'Scope', value: 'Visibility, response, control' },
+    ],
   },
 ]
 
@@ -139,6 +148,10 @@ export interface SystemBody {
   /** The project's own status or kind — never a class invented for the view. */
   kind: string
   summary: string
+  details?: readonly {
+    label: string
+    value: string
+  }[]
   href?: string
   link?: string
   platforms?: readonly string[]
@@ -150,11 +163,11 @@ export interface SystemBody {
   size: number
 }
 
-/* Hand-placed so the three bodies sit in different quadrants and no label
-   crosses another. Projects beyond these fall to the outer ring on a spread of
+/* Hand-placed so the bodies sit in different quadrants and no label crosses
+   another. Projects beyond these fall to the outer ring on a spread of
    angles — placed automatically rather than stacking on top of each other. */
 const ORBITS = [
-  { ring: 0.37, angle: 170, size: 15 },
+  { ring: 0.42, angle: 184, size: 14 },
   { ring: 0.47, angle: 58, size: 12 },
 ]
 
@@ -166,18 +179,20 @@ export const SYSTEM_BODIES: SystemBody[] = [
     name: FEATURED.name,
     kind: FEATURED.status,
     summary: FEATURED.summary,
+    details: FEATURED.details,
     href: FEATURED.href,
     link: FEATURED.link,
     platforms: FEATURED.platforms,
-    ring: 0.31,
-    angle: -40,
-    size: 22,
+    ring: 0.34,
+    angle: -30,
+    size: 30,
   },
   ...STUDIO_PROJECTS.map((project, i) => ({
     key: slug(project.name),
     name: project.name,
     kind: project.kind,
     summary: project.summary,
+    details: project.details,
     href: project.href,
     platforms: project.platforms,
     ...(ORBITS[i] ?? { ring: 0.47, angle: 128 + i * 53, size: 10 }),

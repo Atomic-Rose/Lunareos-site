@@ -21,6 +21,9 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
     <div class="shell page-hero__inner">
       <p class="label label--accent">Lunareos</p>
       <h1 class="page-hero__title" id="page-title">Studio</h1>
+      <p class="lede page-hero__lede">
+        Products from Lunareos, starting with MUSE and the systems growing around it.
+      </p>
     </div>
   </section>
 
@@ -46,17 +49,30 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
           away from the sentence it follows from; it belongs at the end of the
           copy it is the next step after. */}
       <div class="feature__head">
-        <h3 class="feature__title">{FEATURED.name}</h3>
-        <p class="lede feature__lede">{FEATURED.summary}</p>
+        <div>
+          <h3 class="feature__title">{FEATURED.name}</h3>
+          <p class="lede feature__lede">{FEATURED.summary}</p>
 
-        <p class="label feature__platforms">
-          {FEATURED.platforms.join(' · ')}
-        </p>
+          <p class="label feature__platforms">
+            {FEATURED.platforms.join(' · ')}
+          </p>
 
-        {/* MUSE has its own site; this is the handoff to it. */}
-        <a class="feature__link" href={FEATURED.href}>
-          {FEATURED.link} <span class="arrow" aria-hidden="true">↗</span>
-        </a>
+          {/* MUSE has its own site; this is the handoff to it. */}
+          <a class="feature__link" href={FEATURED.href}>
+            {FEATURED.link} <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <dl class="facts feature__facts">
+          {
+            FEATURED.details.map((detail) => (
+              <div class="fact">
+                <dt>{detail.label}</dt>
+                <dd>{detail.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
       </div>
 
       {/* Three bands. Without a real middle capture the wide asset covers
@@ -101,48 +117,49 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
     </div>
   </section>
 
-  <!-- ===== From the studio =============================================== -->
+  <!-- ===== In development ================================================= -->
   <section class="section section--hairline" id="studio" aria-labelledby="studio-title">
     <div class="shell">
       <div class="section__head">
-        <h2 class="label" id="studio-title">From the studio</h2>
+        <h2 class="label" id="studio-title">In development</h2>
         <span class="rule" aria-hidden="true"></span>
       </div>
 
-      {/* An index, not a card grid. A project with nowhere to go yet renders
-          as a plain row — no link, and no arrow promising one. */}
-      <ul class="index">
+      <div class="product-list">
         {
           STUDIO_PROJECTS.map((project) => (
-            <li class="index__item">
+            <article class="product">
               {project.href ? (
-                <a class="index__row" href={project.href}>
-                  <h3 class="index__name">{project.name}</h3>
-                  <p class="index__desc">{project.summary}</p>
-                  <span class="index__meta">
-                    {project.platforms && (
-                      <span class="label index__platforms">{project.platforms.join(' · ')}</span>
-                    )}
-                    <span class="label index__kind">{project.kind}</span>
-                    <span class="arrow" aria-hidden="true">→</span>
+                <a class="product__main" href={project.href}>
+                  <span class="label status">{project.kind}</span>
+                  <h3 class="product__name">{project.name}</h3>
+                  <p class="product__summary">{project.summary}</p>
+                  <span class="product__link">
+                    Visit site <span class="arrow" aria-hidden="true">↗</span>
                   </span>
                 </a>
               ) : (
-                <div class="index__row">
-                  <h3 class="index__name">{project.name}</h3>
-                  <p class="index__desc">{project.summary}</p>
-                  <span class="index__meta">
-                    {project.platforms && (
-                      <span class="label index__platforms">{project.platforms.join(' · ')}</span>
-                    )}
-                    <span class="label index__kind">{project.kind}</span>
-                  </span>
+                <div class="product__main">
+                  <span class="label status">{project.kind}</span>
+                  <h3 class="product__name">{project.name}</h3>
+                  <p class="product__summary">{project.summary}</p>
                 </div>
               )}
-            </li>
+
+              {project.details && (
+                <dl class="facts product__facts">
+                  {project.details.map((detail) => (
+                    <div class="fact">
+                      <dt>{detail.label}</dt>
+                      <dd>{detail.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+            </article>
           ))
         }
-      </ul>
+      </div>
     </div>
   </section>
 
@@ -153,7 +170,7 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
       <p class="label label--accent">Contact</p>
       <h2 class="contact__title" id="contact-title">Get in touch.</h2>
       <p class="contact__body">
-        It's a small studio, so this goes straight to us.
+        For product questions, early access, or studio inquiries.
       </p>
       <a class="contact__address" href={`mailto:${SITE.email}`}>
         {SITE.email} <span class="arrow" aria-hidden="true">↗</span>

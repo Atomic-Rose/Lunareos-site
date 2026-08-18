@@ -108,7 +108,10 @@ project copy.
 - `FEATURED` — the one project on the front of the page. It gets the large
   treatment, the platform row, and the product visual.
 - `STUDIO_PROJECTS` — the product index below it. Append an object with `name`,
-  `summary`, `kind`, and optionally `href`.
+  `summary`, `kind`, optional `details`, and optionally `href`.
+
+`details` is a short list of product facts, each with `label` and `value`.
+Keep it factual and compact: stage, focus, mode, scope.
 
 `platforms` is a plain array of names (`['macOS', 'Windows', …]`); the template
 owns the separator, so don't put `·` in the data. On `FEATURED` it renders under

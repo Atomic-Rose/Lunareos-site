@@ -72,12 +72,13 @@
   z-index: 1;
 }
 
-/* One column, read top to bottom: name → what it is → what it runs on → where
-   to go next. The link used to be baseline-aligned to the far right of the
-   row, which put the section's only action a full shell width from the
-   sentence it follows. */
+/* Name, summary, platforms, handoff, and the product facts that make the
+   section feel like a product page rather than only a screenshot caption. */
 .feature__head {
-  max-width: 46ch;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 0.58fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
   margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
 }
 
@@ -126,6 +127,43 @@
 
 .feature__link:hover .arrow {
   transform: translate(3px, -3px);
+}
+
+/* --- Product facts -------------------------------------------------------- */
+
+.facts {
+  display: grid;
+  border-top: 1px solid var(--border);
+}
+
+.fact {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 0.42fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 0.95rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.fact dt,
+.fact dd {
+  margin: 0;
+}
+
+.fact dt {
+  font-family: var(--font-mono);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.fact dd {
+  color: var(--text-body);
+  line-height: 1.45;
+}
+
+.feature__facts {
+  margin-top: 0.2rem;
 }
 
 /* The product visual carries the section — full shell width, framed by a
@@ -288,6 +326,68 @@ a.index__row:hover .index__meta .arrow {
   transform: translateX(4px);
 }
 
+/* --- Product dossier ------------------------------------------------------ */
+
+.product-list {
+  display: grid;
+  border-top: 1px solid var(--border);
+}
+
+.product {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 0.58fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  padding-block: clamp(2.25rem, 4vw, 3.25rem);
+  border-bottom: 1px solid var(--border);
+}
+
+.product__main {
+  display: block;
+}
+
+a.product__main:hover .product__name,
+a.product__main:hover .product__link {
+  color: var(--accent-text);
+}
+
+.product__name {
+  margin-top: 1.1rem;
+  font-size: var(--size-h1);
+  letter-spacing: 0.04em;
+  line-height: var(--leading-heading);
+  transition: color 0.2s var(--ease);
+}
+
+.product__summary {
+  margin-top: 1rem;
+  max-width: 42ch;
+  color: var(--text-muted);
+}
+
+.product__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  color: var(--text-body);
+  border-bottom: 1px solid var(--border-lift);
+  padding-bottom: 0.35rem;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+a.product__main:hover .product__link {
+  border-color: var(--accent);
+}
+
+.product__link .arrow {
+  font-size: 0.8em;
+  transition: transform 0.2s var(--ease);
+}
+
+a.product__main:hover .product__link .arrow {
+  transform: translate(3px, -3px);
+}
+
 /* --- Editorial: label on the left, document on the right ------------------ */
 /* Used only by /privacy/. Top-aligned, because the right column is long. */
 
@@ -447,6 +547,12 @@ a.index__row:hover .index__meta .arrow {
     grid-template-columns: minmax(0, 1fr);
     gap: 1.25rem;
   }
+
+  .feature__head,
+  .product {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
 }
 
 /* --- The window crop -----------------------------------------------------
@@ -565,6 +671,11 @@ a.index__row:hover .index__meta .arrow {
     gap: 0.85rem 1rem;
   }
 
+  .fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.3rem;
+  }
+
   .featured .status {
     margin-left: auto;
   }
@@ -574,4 +685,3 @@ a.index__row:hover .index__meta .arrow {
     flex-basis: 100%;
   }
 }
-

@@ -350,7 +350,8 @@ Logo files in `public/` are unmodified kit assets:
 
 | File | Kit source | Use |
 |---|---|---|
-| `lunareos-logo-horizontal-silver.svg` | `01-Primary/` | Header and footer lockup |
+| `lunareos-wordmark-silver.svg` | `03-Wordmark/` | Header and footer wordmark |
+| `lunareos-logo-horizontal-silver.svg` | `01-Primary/` | Available full lockup |
 | `lunareos-symbol-silver.svg` | `02-Symbol/` | Hero mark; header below 560px |
 | `favicon.svg` | `04-App-Icons/lunareos-favicon.svg` | Browser icon |
 | `favicon.ico` | `04-App-Icons/` | Legacy browser icon |
@@ -385,10 +386,10 @@ markers, where the text threshold doesn't apply.
 
 ### Sizing
 
-v4 trims every canvas to the artwork plus even padding, so `--logo-lockup-w` is
-a true rendered width. The kit's minimums are 140px for the horizontal lockup
-and 24px for the symbol; below the lockup's floor the header switches to the
-symbol rather than shrinking past it.
+The header uses the wordmark-only asset on wider screens and the symbol below
+the wordmark's useful reading size. `--logo-lockup-w` controls the rendered
+wordmark width; the variable name is kept for the existing header/footer class
+names.
 
 ### Type
 

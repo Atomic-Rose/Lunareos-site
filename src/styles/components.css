@@ -666,9 +666,35 @@ a.product__main:hover .product__link .arrow {
 
 /* The status label has nowhere to go beside the heading at this width. */
 @media (max-width: 520px) {
+  .section {
+    padding-block: var(--band);
+  }
+
   .section__head {
     flex-wrap: wrap;
     gap: 0.85rem 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .feature__head,
+  .product {
+    gap: 1.25rem;
+  }
+
+  .feature__head {
+    margin-bottom: 2rem;
+  }
+
+  .feature__title,
+  .product__name {
+    font-size: 2rem;
+  }
+
+  .feature__lede,
+  .product__summary,
+  .contact__body,
+  .page-hero__lede {
+    max-width: none;
   }
 
   .fact {
@@ -683,5 +709,19 @@ a.product__main:hover .product__link .arrow {
   .featured .rule {
     order: 3;
     flex-basis: 100%;
+  }
+
+  .product {
+    padding-block: 2rem;
+  }
+
+  .contact__address {
+    gap: 0.5rem;
+    font-size: 1.0625rem;
+    overflow-wrap: anywhere;
+  }
+
+  .page-hero {
+    padding-block: 2.75rem 2rem;
   }
 }

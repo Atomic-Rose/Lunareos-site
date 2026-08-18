@@ -8,17 +8,16 @@ const here = Astro.url.pathname.replace(/\/$/, '') || '/'
 <header class="site-header">
   <div class="site-header__inner">
     {/*
-      Two lockups, swapped by CSS at the width where the horizontal logo would
-      fall below the brand kit's 140px artwork minimum. Below that the kit's
-      guidance is symbol-only (24px minimum), not a shrunken lockup.
+      Wordmark-only on wider screens; symbol-only below the point where the
+      wordmark would fall under its minimum legible size.
     */}
     <a class="site-header__brand" href={withBase('/')} aria-label="Lunareos — home">
       <img
         class="site-header__lockup"
-        src={withBase('/lunareos-logo-horizontal-silver.svg')}
+        src={withBase('/lunareos-wordmark-silver.svg')}
         alt="Lunareos"
-        width="1614"
-        height="399"
+        width="1174"
+        height="174"
       />
       <img
         class="site-header__symbol"

@@ -25,9 +25,8 @@
 }
 
 /* --- Header ---------------------------------------------------------------
-   v4's silver lockup is transparent, so the header can blur what scrolls
-   beneath it. (v2's reversed lockup had a midnight rectangle baked in, which
-   forced an opaque header — that constraint is gone.) */
+   v4's silver wordmark is transparent, so the header can blur what scrolls
+   beneath it. */
 
 .site-header {
   position: sticky;
@@ -205,9 +204,22 @@
   }
 }
 
-/* Below this width the lockup would render under the kit's 140px minimum, so
-   the header switches to the symbol. */
+/* Below this width the wordmark gets cramped, so the header switches to the
+   symbol. */
 @media (max-width: 560px) {
+  .site-header__inner {
+    gap: 1rem;
+  }
+
+  .site-header__actions,
+  .site-header__nav {
+    gap: 0.9rem;
+  }
+
+  .site-header__link {
+    font-size: 0.6875rem;
+  }
+
   .site-header__lockup {
     display: none;
   }
@@ -220,5 +232,22 @@
 @media (max-width: 520px) {
   .site-header .button {
     padding: 0.5rem 0.85rem;
+  }
+
+  .footer-mini {
+    min-height: var(--footer-mini-h);
+    height: auto;
+  }
+
+  .footer-mini__inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.55rem;
+    padding-block: 0.8rem;
+  }
+
+  .footer-mini__legal {
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
   }
 }

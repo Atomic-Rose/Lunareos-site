@@ -874,6 +874,95 @@
 }
 
 @media (max-width: 620px) {
+  .system {
+    min-height: auto;
+    align-items: flex-start;
+    padding-block: 1.5rem 2rem;
+  }
+
+  .system__inner {
+    gap: 1.35rem;
+  }
+
+  .system__eyebrow {
+    gap: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .system__eyebrow::after {
+    flex-basis: 4rem;
+    flex-grow: 0;
+  }
+
+  .system__title {
+    max-width: 12ch;
+    font-size: 2.55rem;
+    line-height: 1.02;
+  }
+
+  .system__lede {
+    margin-top: 1rem;
+    max-width: 26ch;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .system__hint {
+    margin-top: 1.15rem;
+  }
+
+  .system__hint-line {
+    width: 1.75rem;
+  }
+
+  .system__head {
+    margin-bottom: 0.8rem;
+  }
+
+  .system__transmission {
+    margin-bottom: 0.85rem;
+  }
+
+  .system__transmission-head {
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .system__transmission-title {
+    font-size: 1.125rem;
+  }
+
+  .system__transmission-copy {
+    margin-top: 0.65rem;
+    max-width: 100%;
+  }
+
+  .system__map {
+    --cx: 50%;
+    width: min(100%, 29rem);
+    aspect-ratio: 1 / 0.72;
+  }
+
+  .system__core {
+    width: 28%;
+  }
+
+  .system__core-name {
+    top: calc(100% + 0.8rem);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    text-indent: 0.2em;
+  }
+
+  .system__axis {
+    opacity: 0.24;
+  }
+
+  .system__reticle {
+    width: 38%;
+    opacity: 0.42;
+  }
+
   /* The kind under each name is the first thing to go: three two-line labels
      on a 280px map is a diagram of labels. */
   .system__label-kind {
@@ -891,9 +980,69 @@
 
   .system__body {
     gap: 0.5rem;
+    padding: 0.65rem;
+    margin: -0.65rem;
+  }
+
+  .system__body--left {
+    flex-direction: row;
+  }
+
+  .system__body--left .system__label {
+    text-align: left;
+  }
+
+  .system__body::before,
+  .system__body--left::before {
+    left: calc(0.65rem + var(--size) + 0.45rem);
+    right: 0.45rem;
+    background: linear-gradient(to right, var(--accent), transparent);
+    transform-origin: left;
+  }
+
+  .object {
+    position: fixed;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: calc(var(--gutter) + env(safe-area-inset-bottom));
+    max-width: none;
+    max-height: min(70svh, 30rem);
+    overflow: auto;
+    transform: translateY(1.25rem);
+  }
+
+  .object__head {
+    padding: 0.85rem 1rem;
   }
 
   .object__body {
-    padding-block: 1.5rem;
+    padding: 1.15rem 1rem 1.25rem;
+  }
+
+  .object__name {
+    font-size: 2rem;
+  }
+
+  .object__summary {
+    max-width: none;
+  }
+
+  .object__fact {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .system__title {
+    font-size: 2.25rem;
+  }
+
+  .system__label {
+    font-size: 0.5625rem;
+  }
+
+  .system__body {
+    gap: 0.4rem;
   }
 }

@@ -123,13 +123,20 @@
   --footer-mini-h: 3.25rem; /* the home page's one-line footer              */
 
   /* --- Logo sizing -------------------------------------------------------
-     v4 trims every canvas to the artwork plus even padding, so these are now
-     true rendered widths — v2's ~18% of trailing empty space is gone and no
-     compensation is needed. The kit's minimums are 140px for the horizontal
-     lockup and 24px for the symbol; below the lockup's floor the header falls
-     back to the symbol rather than shrinking past it. */
-  --logo-lockup-w: clamp(152px, 13vw, 188px);
+     The header uses the wordmark-only asset on wider screens, and falls back
+     to the symbol below the wordmark's useful reading size. */
+  --logo-lockup-w: clamp(184px, 15vw, 236px);
   --logo-symbol-w: 32px;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 560px) {
+  :root {
+    --gutter: 1rem;
+    --band: 4rem;
+    --band-tight: 3rem;
+    --header-h: 4rem;
+    --footer-mini-h: 4rem;
+  }
 }

@@ -9,6 +9,17 @@
 }
 
 html {
+  /* Every length in this stylesheet is a rem or a rem-capped clamp, so the whole
+     system — type, spacing, the shell, the orbit map — rides on this one number.
+     Left at 16px it stops growing around 1600px and a large display just gets
+     more empty gutter, which is the "everything is tiny" reading of a 27-inch
+     screen. So: hold the browser's own size up to 1600px, then grow half a
+     pixel per 100px of viewport, and stop at 24px.
+
+     The floor is `1rem`, not `16px`. On the root element's own font-size `rem`
+     means the browser default, so a visitor who has raised their text size keeps
+     the raise instead of having it overwritten. */
+  font-size: clamp(1rem, 0.5rem + 0.5vw, 1.5rem);
   scroll-behavior: smooth;
   /* Anchor targets clear the fixed header instead of hiding beneath it. */
   scroll-padding-top: calc(var(--header-h) + 1.5rem);

@@ -113,7 +113,7 @@
   --band: clamp(5rem, 10vw, 9rem);
   --band-tight: clamp(3rem, 5.5vw, 5rem);
 
-  --maxw: 1400px;
+  --maxw: 87.5rem; /* 1400px at the base root size, and grows with it     */
   --measure: 60ch;
 
   --radius: 4px; /* restrained — the brand is drawn with hard geometry      */
@@ -125,8 +125,8 @@
   /* --- Logo sizing -------------------------------------------------------
      The header uses the wordmark-only asset on wider screens, and falls back
      to the symbol below the wordmark's useful reading size. */
-  --logo-lockup-w: clamp(184px, 15vw, 236px);
-  --logo-symbol-w: 32px;
+  --logo-lockup-w: clamp(11.5rem, 15vw, 14.75rem);
+  --logo-symbol-w: 2rem;
 
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }

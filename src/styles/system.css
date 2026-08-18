@@ -78,7 +78,12 @@
 }
 
 .system__title {
-  font-size: clamp(2.625rem, 4.8vw, 4.45rem);
+  /* The ceiling is the size this reaches at 1400px, which is where `.shell`
+     stops widening — past that the column is frozen while `vw` keeps climbing,
+     and the statement breaks from three lines to five. Held here it grows again
+     only when the root size does, which is what widens the column too, so the
+     three-line setting holds at every width above the fold. */
+  font-size: clamp(2.625rem, 4.8vw, 4.2rem);
   letter-spacing: -0.025em;
   line-height: 1.04;
   max-width: 16.25ch;
@@ -872,14 +877,20 @@
     margin-right: 0;
   }
 
+  /* Stacked, the section runs taller than the viewport, so a panel anchored to
+     its foot opens below the fold — you click a body and nothing appears to
+     happen. Fixed to the viewport instead, which is the move the narrow layout
+     below already makes, and measured against the viewport to match. */
   .object {
-    --lift: clamp(4.5rem, 8vw, 5.5rem);
+    --lift: clamp(1.5rem, 4vw, 2.5rem);
+    position: fixed;
     top: auto;
-    bottom: var(--lift);
+    bottom: calc(var(--lift) + env(safe-area-inset-bottom));
     left: var(--gutter);
     right: var(--gutter);
     width: auto;
     max-width: 26rem;
+    max-height: min(42rem, calc(100svh - var(--header-h) - var(--lift) - 1.5rem));
     transform: translateY(1.5rem);
   }
 }

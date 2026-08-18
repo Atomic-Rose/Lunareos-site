@@ -151,11 +151,6 @@
   line-height: 1.55;
 }
 
-.system__caption {
-  margin-top: clamp(1rem, 2vw, 1.5rem);
-  text-align: right;
-}
-
 /* The mirror of the map's caption: a short rule, then the one instruction the
    view needs. */
 .system__hint {
@@ -830,11 +825,12 @@
 @media (max-width: 1100px) {
   .system__inner {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(2rem, 5vw, 3rem);
+    gap: clamp(1.75rem, 4vw, 2.5rem);
   }
 
   .system {
-    padding-block: clamp(1.5rem, 4vw, 3rem);
+    align-items: flex-start;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
   }
 
   /* Stacked: the spine has nothing to divide, and the map goes back inside the
@@ -853,12 +849,9 @@
   }
 
   .system__map {
-    width: min(100%, 34rem);
+    width: min(100%, 42rem);
+    margin-inline: auto;
     margin-right: 0;
-  }
-
-  .system__caption {
-    text-align: left;
   }
 
   .object {
@@ -873,15 +866,66 @@
   }
 }
 
+@media (max-width: 900px) {
+  .system__copy {
+    max-width: 42rem;
+  }
+
+  .system__title {
+    font-size: 3.5rem;
+    max-width: 14ch;
+  }
+
+  .system__lede {
+    max-width: 29ch;
+  }
+
+  .system__hint {
+    margin-top: 1.35rem;
+  }
+
+  .system__head {
+    margin-bottom: 1rem;
+  }
+
+  .system__transmission {
+    margin-bottom: 1.25rem;
+  }
+
+  .system__map {
+    width: min(100%, 40rem);
+  }
+
+  .system__label-kind {
+    display: none;
+  }
+
+  .system__body--left {
+    flex-direction: row;
+  }
+
+  .system__body--left .system__label {
+    text-align: left;
+  }
+
+  .system__body::before,
+  .system__body--left::before {
+    left: calc(0.75rem + var(--size) + 0.5rem);
+    right: 0.5rem;
+    background: linear-gradient(to right, var(--accent), transparent);
+    transform-origin: left;
+  }
+}
+
 @media (max-width: 620px) {
   .system {
     min-height: auto;
     align-items: flex-start;
-    padding-block: 1.5rem 2rem;
+    padding-block: 1.25rem 1.5rem;
   }
 
   .system__inner {
-    gap: 1.35rem;
+    gap: 1rem;
   }
 
   .system__eyebrow {
@@ -895,24 +939,20 @@
   }
 
   .system__title {
-    max-width: 12ch;
-    font-size: 2.55rem;
-    line-height: 1.02;
+    max-width: 11.5ch;
+    font-size: 2.25rem;
+    line-height: 1.05;
   }
 
   .system__lede {
-    margin-top: 1rem;
+    margin-top: 0.85rem;
     max-width: 26ch;
-    font-size: 1rem;
+    font-size: 0.9375rem;
     line-height: 1.5;
   }
 
   .system__hint {
-    margin-top: 1.15rem;
-  }
-
-  .system__hint-line {
-    width: 1.75rem;
+    display: none;
   }
 
   .system__head {
@@ -944,7 +984,7 @@
   }
 
   .system__core {
-    width: 28%;
+    width: 24%;
   }
 
   .system__core-name {
@@ -982,6 +1022,16 @@
     gap: 0.5rem;
     padding: 0.65rem;
     margin: -0.65rem;
+  }
+
+  .system__body[data-body='muse'] {
+    left: min(calc(var(--cx) + 32cqw), calc(100% - 4.25rem));
+    top: calc(50% - 13cqw);
+  }
+
+  .system__body[data-body='bastion'] {
+    left: max(calc(var(--cx) - 42cqw), 3.4rem);
+    top: calc(50% - 1cqw);
   }
 
   .system__body--left {
@@ -1035,7 +1085,7 @@
 
 @media (max-width: 380px) {
   .system__title {
-    font-size: 2.25rem;
+    font-size: 2.05rem;
   }
 
   .system__label {

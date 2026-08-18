@@ -638,17 +638,32 @@
 }
 
 .object {
+  /* Anchored to the foot of the section with `bottom`, never with `top: 50%` +
+     `translate`: the build's CSS minifier drops a standalone `translate` when
+     the same rule also sets `transform`, so a centring that survives `astro
+     dev` disappears from the bundle. Nothing here may pair `translate`,
+     `rotate` or `scale` with `transform` on one selector.
+
+     `--lift` is how far the panel rides above the section's bottom edge, and
+     `max-height` below has to subtract it: the section is only
+     `100svh - header - footer` tall, so a panel that reserves less room than
+     its own lift starts above the section's top edge, where `overflow: clip`
+     shears its head off. */
+  --lift: calc(var(--footer-mini-h) + 1.5rem);
+
   position: absolute;
   right: var(--gutter);
   top: auto;
-  bottom: calc(var(--footer-mini-h) + 1.5rem);
-  translate: none;
+  bottom: var(--lift);
   width: min(28rem, calc(100% - var(--gutter) * 2));
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(18px);
   border: 1px solid var(--border-lift);
   border-radius: var(--radius-lg);
-  max-height: min(42rem, calc(100svh - var(--header-h) - var(--footer-mini-h) - 3rem));
+  max-height: min(
+    42rem,
+    calc(100svh - var(--header-h) - var(--footer-mini-h) - var(--lift) - 1.5rem)
+  );
   overflow: auto;
   opacity: 0;
   visibility: hidden;
@@ -858,8 +873,9 @@
   }
 
   .object {
+    --lift: clamp(4.5rem, 8vw, 5.5rem);
     top: auto;
-    bottom: clamp(4.5rem, 8vw, 5.5rem);
+    bottom: var(--lift);
     left: var(--gutter);
     right: var(--gutter);
     width: auto;

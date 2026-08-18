@@ -50,7 +50,7 @@ import { SITE, FEATURED, STUDIO_PROJECTS, withBase } from '../site'
           copy it is the next step after. */}
       <div class="feature__head">
         <div>
-          <h3 class="feature__title">{FEATURED.name}</h3>
+          <h3 class="feature__title" transition:name="featured-name">{FEATURED.name}</h3>
           <p class="lede feature__lede">{FEATURED.summary}</p>
 
           <p class="label feature__platforms">

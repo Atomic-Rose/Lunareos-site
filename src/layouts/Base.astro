@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
 import FooterMini from '../components/FooterMini.astro'
+import { ClientRouter } from 'astro:transitions'
 import { SITE, withBase } from '../site'
 
 import '../styles/tokens.css'
@@ -69,10 +70,29 @@ const socialImage = new URL(withBase('/og-image.png'), SITE.url).href
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
     />
+
+    {/* Cross-page continuity. The three pages share a ground, a header, and a
+        product name, so cutting between them as separate documents throws away
+        a relationship the design already has. Astro's own stylesheet disables
+        every view transition under `prefers-reduced-motion`, and without
+        JavaScript the links stay ordinary links. */}
+    <ClientRouter />
   </head>
 
   <body class:list={[chrome === 'system' && 'is-system']}>
     <a class="skip-link" href="#main">Skip to content</a>
+
+    <script>
+      /* The hero's entrance stagger is a *first impression*, not a page style:
+         replayed on every client-side navigation it fights the view transition,
+         which is already carrying the eye from one page to the next. Marking the
+         incoming document lets the CSS stand the stagger down — `astro:before-swap`
+         is the one moment the next document exists but is not yet on screen. */
+      document.addEventListener('astro:before-swap', (event) => {
+        event.newDocument.documentElement.dataset.navigated = ''
+      })
+    </script>
+
     <div class="page">
       <Header />
       <main id="main">

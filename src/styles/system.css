@@ -327,14 +327,42 @@
   top: 50%;
   width: var(--d);
   aspect-ratio: 1;
+  /* `translate`, and no `transform` in this rule — see the note on `.object`.
+     The two together do not survive the build. */
   translate: -50% -50%;
   border: 1px solid var(--border);
   border-radius: 50%;
+  /* Slower coming up than going down: an orbit should answer the pointer
+     without racing it, and release the moment attention leaves. */
+  transition:
+    border-color 0.45s var(--ease),
+    box-shadow 0.45s var(--ease);
 }
 
 .system__ring--featured {
   border-color: color-mix(in srgb, var(--accent) 34%, var(--border-lift));
   box-shadow: 0 0 36px rgba(79, 109, 255, 0.09);
+}
+
+/* Reaching a body lights the orbit it travels on — both arcs of it, since the
+   ring is drawn twice for depth. This is what makes "select an object to
+   inspect" literal: the diagram answers the pointer, so it reads as an
+   instrument rather than a picture of one.
+
+   One rule per orbit, because CSS cannot compare an attribute on one element
+   against an attribute on another; the pairing has to be enumerated. Four
+   covers the diagram at any density the composition holds — a fifth product
+   needs a fifth line here. `--lit` carries no colour of its own so the
+   featured ring keeps its own tint underneath.
+
+   Keyboard focus and an open panel light the same path: the effect is an
+   affordance, not decoration, so it cannot be hover-only. */
+.system__map:has(.system__body[data-orbit='0']:is(:hover, :focus-visible, [aria-expanded='true'])) .system__ring[data-orbit='0'],
+.system__map:has(.system__body[data-orbit='1']:is(:hover, :focus-visible, [aria-expanded='true'])) .system__ring[data-orbit='1'],
+.system__map:has(.system__body[data-orbit='2']:is(:hover, :focus-visible, [aria-expanded='true'])) .system__ring[data-orbit='2'],
+.system__map:has(.system__body[data-orbit='3']:is(:hover, :focus-visible, [aria-expanded='true'])) .system__ring[data-orbit='3'] {
+  border-color: color-mix(in srgb, var(--accent) 62%, var(--border-lift));
+  box-shadow: 0 0 44px rgba(79, 109, 255, 0.18);
 }
 
 /* The centre's own ring. Split the same way, which is what stops it reading as
@@ -809,6 +837,21 @@
   .system__lede,
   .system__transmission {
     animation: rise 500ms var(--ease) backwards;
+  }
+
+  /* Arriving by client-side navigation, not by load. The stagger is a first
+     impression; replayed on every return it stops meaning anything, and it
+     would fade the transmission out from under the view transition that is
+     carrying MUSE's name across from the studio page. Set in Base.astro on
+     `astro:before-swap`. */
+  [data-navigated] :is(
+      .system__eyebrow,
+      .system__title,
+      .system__lede,
+      .system__transmission,
+      .system__map
+    ) {
+    animation: none;
   }
 
   .system__eyebrow {

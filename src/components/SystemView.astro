@@ -108,7 +108,13 @@ const stars = Array.from({ length: 220 }, () => ({
           <p class="label">Current signal</p>
           <p class="label label--accent">{FEATURED.status}</p>
         </div>
-        <h2 class="system__transmission-title" id="system-transmission-title">{FEATURED.name}</h2>
+        <h2
+          class="system__transmission-title"
+          id="system-transmission-title"
+          transition:name="featured-name"
+        >
+          {FEATURED.name}
+        </h2>
         <p class="system__transmission-copy">{FEATURED.summary}</p>
       </div>
 
@@ -131,10 +137,11 @@ const stars = Array.from({ length: 220 }, () => ({
         <div class="system__plane system__plane--far" aria-hidden="true">
           <span class="system__planet-ring"></span>
           {
-            allRings.map((r) => (
+            allRings.map((r, i) => (
               <span
                 class:list={['system__ring', r.featured && 'system__ring--featured']}
                 style={`--d:${r.ring * 200}%`}
+                data-orbit={i}
               />
             ))
           }
@@ -155,10 +162,11 @@ const stars = Array.from({ length: 220 }, () => ({
         <div class="system__plane system__plane--near" aria-hidden="true">
           <span class="system__planet-ring"></span>
           {
-            allRings.map((r) => (
+            allRings.map((r, i) => (
               <span
                 class:list={['system__ring', r.featured && 'system__ring--featured']}
                 style={`--d:${r.ring * 200}%`}
+                data-orbit={i}
               />
             ))
           }
@@ -174,6 +182,7 @@ const stars = Array.from({ length: 220 }, () => ({
               aria-controls={`object-${body.key}`}
               aria-expanded="false"
               data-body={body.key}
+              data-orbit={rings.indexOf(body.ring)}
             >
               <span class="system__dot" aria-hidden="true" />
               <span class="system__label">
@@ -248,10 +257,17 @@ const stars = Array.from({ length: 220 }, () => ({
 <script>
   /* Progressive enhancement only. Without this the fragment links still work
      and `:target` still opens a panel; this adds pointer drift, closes on Esc,
-     and keeps the URL clean. */
-  const system = document.querySelector<HTMLElement>('[data-system]')
+     and keeps the URL clean.
 
-  if (system) {
+     Wrapped and bound to `astro:page-load` rather than run at the top level: a
+     bundled module executes once per *document*, and a view transition swaps the
+     document without reloading it — so a top-level version would wire itself to
+     the first home page and then quietly do nothing on every return to it. The
+     event fires on the first render too, so this covers both arrivals. */
+  const setup = () => {
+    const system = document.querySelector<HTMLElement>('[data-system]')
+    if (!system) return
+
     const map = system.querySelector<HTMLElement>('[data-map]')
     const bodies = [...system.querySelectorAll<HTMLAnchorElement>('[data-body]')]
     const panels = [...system.querySelectorAll<HTMLElement>('[data-panel]')]
@@ -320,4 +336,6 @@ const stars = Array.from({ length: 220 }, () => ({
       })
     }
   }
+
+  document.addEventListener('astro:page-load', setup)
 </script>

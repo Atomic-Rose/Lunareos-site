@@ -207,7 +207,7 @@
 @media (min-width: 1101px) {
   .system.is-open .system__map,
   .system:has(.object:target) .system__map {
-    translate: -16% 0;
+    translate: -7% 0;
   }
 }
 
@@ -647,6 +647,8 @@
   backdrop-filter: blur(18px);
   border: 1px solid var(--border-lift);
   border-radius: var(--radius-lg);
+  max-height: min(42rem, calc(100svh - var(--header-h) - var(--footer-mini-h) - 3rem));
+  overflow: auto;
   opacity: 0;
   visibility: hidden;
   transform: translateX(1.5rem);

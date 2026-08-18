@@ -640,8 +640,9 @@
 .object {
   position: absolute;
   right: var(--gutter);
-  top: 50%;
-  translate: 0 -50%;
+  top: auto;
+  bottom: calc(var(--footer-mini-h) + 1.5rem);
+  translate: none;
   width: min(28rem, calc(100% - var(--gutter) * 2));
   background: color-mix(in srgb, var(--surface) 88%, transparent);
   backdrop-filter: blur(18px);
@@ -863,7 +864,6 @@
     right: var(--gutter);
     width: auto;
     max-width: 26rem;
-    translate: none;
     transform: translateY(1.5rem);
   }
 }
